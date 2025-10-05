@@ -39,7 +39,9 @@ const SideBar = () => {
 
       {/* Prepare New Button and Menu */}
       <div className="mt-10">
+        <Link href={"/create"} className="w-full">
         <Button className="w-full">Generate Material +</Button>
+        </Link>
 
         <div className="mt-5">
           {MenuList.map((item, index) => {

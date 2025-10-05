@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import {Toaster} from "@/components/ui/sonner"
 import "./globals.css";
 
 import {
-  ClerkProvider} from '@clerk/nextjs'
-import {Provider} from "./provider"
+  ClerkProvider
+} from '@clerk/nextjs'
+import { Provider } from "./provider"
 
 
 export const metadata: Metadata = {
@@ -12,8 +14,8 @@ export const metadata: Metadata = {
   description: "PrepSphere AI : Exam and interview material generator",
 };
 
-const outfit= Outfit({
-  subsets:['latin']
+const outfit = Outfit({
+  subsets: ['latin']
 })
 export default function RootLayout({
   children,
@@ -21,18 +23,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-        <ClerkProvider>
+    <ClerkProvider>
 
-    <html lang="en">
-      <body
-        className={outfit.className}
-      >
-        <Provider>
-        {children}
-        </Provider>
-      </body>
-    </html>
-        </ClerkProvider>
+      <html lang="en">
+        <body
+          className={outfit.className}
+        >
+          <Provider>
+            {children}
+          </Provider>
+          <Toaster/>
+        </body>
+      </html>
+    </ClerkProvider>
 
   );
 }

@@ -1,6 +1,8 @@
 import { currentUser } from "@clerk/nextjs/server";
 import React from "react";
 import Banner from "./_components/Banner";
+import CourseList from "./_components/CourseList";
+
 
 async function Dashboard() {
   const user = await currentUser();
@@ -11,6 +13,7 @@ async function Dashboard() {
   return (
     <>
       <Banner isNewUser={isNewUser} />
+      <CourseList/>
     </>
   );
 }
