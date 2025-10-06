@@ -41,3 +41,29 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const courseId = searchParams.get('courseId');
+
+    if (!courseId) {
+      return NextResponse.json({ error: 'Missing courseId in query params' }, { status: 400 });
+    }
+
+    const course = await db
+      .select()
+      .from(STUDY_MATERIAL_TABLE)
+      .where(eq(STUDY_MATERIAL_TABLE.courseId, courseId));
+
+    if (!course || course.length === 0) {
+      return NextResponse.json({ error: 'Course not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ result: course[0] }, { status: 200 });
+
+  } catch (error) {
+    console.error('Error fetching course:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}

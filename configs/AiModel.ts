@@ -20,6 +20,7 @@ export async function getCourseOutline(prompt: string): Promise<string> {
             chapter_number: { type: Type.NUMBER },
             chapter_title: { type: Type.STRING },
             chapter_summary: { type: Type.STRING },
+            emoji: { type: Type.STRING },
             topics: {
               type: Type.ARRAY,
               items: { type: Type.STRING },
