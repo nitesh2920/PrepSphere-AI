@@ -68,6 +68,7 @@ export async function generateNotesAIModel(prompt: string): Promise<string> {
   ];
 
   const config = {
+    responseMimeType:'text/html',
     thinkingConfig: {
       thinkingBudget: -1,
     },

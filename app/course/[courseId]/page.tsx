@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 
 import { useParams } from 'next/navigation'
-import DashboardHeader from '@/app/dashboard/_components/DashboardHeader'
 import axios from "axios"
 import CourseIntroCard from './_components/CourseIntro'
 import StudyMaterialSection from './_components/StudyMaterialSection'
@@ -23,11 +22,11 @@ export default function Course() {
     }
     return (
         <div>
-            <DashboardHeader />
-            <div className='mx-10 md:mx-36 lg:mx-60 mt-10'>
+           
+            <div className=' '>
 
                 <CourseIntroCard course={course} />
-                <StudyMaterialSection />
+                <StudyMaterialSection courseId={courseId}/>
                 {course && <ChapterList course={course} />}
 
             </div>
