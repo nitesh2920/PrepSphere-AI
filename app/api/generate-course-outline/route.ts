@@ -7,7 +7,7 @@ import { inngest } from "@/inngest/client";
 export async function POST(req:NextRequest) {
     const { courseId, topic, studyType, difficultyLevel, createdBy } = await req.json();
 
-    const PROMPT = 'Generate a study material for ' + topic + ' for' + studyType + ' and level of difficulty  will be ' + difficultyLevel + ' with sumery of course, List of Chapters along with summary and Emoji icon for each chapter, Topic list in each chapter in JSON format only. '
+    const PROMPT = 'Generate a study material for ' + topic + ' for' + studyType + ' and level of difficulty  will be ' + difficultyLevel + ' with sumery of course, List of Chapters along with summary and Emoji icon related for each chapter and the heading of each chapter should be in h1 tag, Topic list in each chapter in JSON format only. '
 
     const aiResp = await getCourseOutline(PROMPT)
     const cleanJson = aiResp.replace(/```json\n?|```/g, '').trim();

@@ -61,6 +61,7 @@ export async function getCourseOutline(prompt: string): Promise<string> {
 
 
 export async function generateNotesAIModel(prompt: string): Promise<string> {
+  
   const tools = [
     {
       googleSearch: {},
@@ -68,7 +69,7 @@ export async function generateNotesAIModel(prompt: string): Promise<string> {
   ];
 
   const config = {
-    responseMimeType:'text/html',
+    responseMimeType:'text/plain',
     thinkingConfig: {
       thinkingBudget: -1,
     },
@@ -93,4 +94,44 @@ export async function generateNotesAIModel(prompt: string): Promise<string> {
 
   return result;
 
+}
+
+export async function generateFlashcards(prompt: string): Promise<string> {
+  // Schema definition
+  const flashcardSchema: Schema = {
+    type: Type.ARRAY,
+    items: {
+      type: Type.OBJECT,
+      properties: {
+        front: { type: Type.STRING },
+        back: { type: Type.STRING },
+      },
+      required: ["front", "back"],
+    },
+  };
+
+  const config = {
+    responseMimeType: "application/json",
+    responseSchema: flashcardSchema,
+    thinkingConfig: {
+      thinkingBudget: -1,
+    },
+  };
+
+  const contents = [
+    {
+      role: 'user',
+      parts: [{ text: prompt }],
+    },
+  ];
+
+  const result = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents,
+    config,
+  });
+
+  const response = result.text ?? '';
+  console.log("Flashcard AI Response:", response);
+  return response;
 }

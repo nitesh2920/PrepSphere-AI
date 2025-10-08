@@ -4,9 +4,9 @@ import MaterialCardItem from './MaterialCardItem';
 import axios from 'axios';
 import Link from 'next/link';
 import { Item } from '@radix-ui/react-select';
-export default function StudyMaterialSection({courseId}) {
+export default function StudyMaterialSection({courseId,course}) {
 
-  const [studyTypeContent,setStudyTypeContent]=useState()
+  const [studyTypeContent,setStudyTypeContent]=useState([])
    const materialList = [
   {
     name: 'Notes/Chapters',
@@ -20,7 +20,7 @@ export default function StudyMaterialSection({courseId}) {
     desc: 'Strengthen your recall of key concepts with interactive flashcards designed for active learning.',
     icon: '/flashcard.png',
     path: '/flashcards',
-    type:'flashcards'
+    type:'flashcard'
   },
   {
     name: 'Quiz',
@@ -42,11 +42,14 @@ useEffect(()=>{
   GetStudyMaterial()
 },[])
 
+  if (!studyTypeContent) {
+    return <div>Loading study material...</div>;
+  }
+
 const GetStudyMaterial=async ()=>{
   const result= await axios.post('/api/study-type',{
     courseId:courseId,
     studyType:'ALL'
-
   })
   console.log("studyMaterial",result?.data)
   setStudyTypeContent(result.data)
@@ -56,15 +59,17 @@ const GetStudyMaterial=async ()=>{
       <h2 className='font-medium text-xl'>Study Material</h2>
       <div className='grid grid-cols-2 md:grid-cols-4 gap-5 mt-3 '>
         {materialList.map((item, index) => (
-                  <Link key={index} href={'/course/'+courseId+item.path}>
+                  // <Link key={index} href={'/course/'+courseId+item.path}>
 
           <MaterialCardItem 
             key={index} 
             item={item} 
             studyTypeContent={studyTypeContent}
+            course={course}
+            refreshData={GetStudyMaterial}
       
           />
-           </Link>
+           /* </Link> */
         ))}
        
       </div>

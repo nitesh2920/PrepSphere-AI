@@ -26,7 +26,7 @@ export default function Course() {
             <div className=' '>
 
                 <CourseIntroCard course={course} />
-                <StudyMaterialSection courseId={courseId}/>
+                <StudyMaterialSection courseId={courseId} course={course}/>
                 {course && <ChapterList course={course} />}
 
             </div>
