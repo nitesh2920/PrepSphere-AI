@@ -2,73 +2,125 @@
 import axios from 'axios';
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { useUser } from '@clerk/nextjs'; // Used to get user email for API calls
+import { useUser } from '@clerk/nextjs';
 import FlashCardItem from './_components/FlashcardItem';
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from '@/components/ui/carousel';
+import FlashcardHeader from './_components/FlashcardHeader';
+import ProgressNavigation from './_components/ProgressNavigation';
+import NavigationControls from './_components/NavigationControls';
+import LoadingState from './_components/LoadingState';
+import EmptyState from './_components/EmptyState';
+
+interface FlashcardData {
+    front: string;
+    back: string;
+}
+
+interface FlashcardsResponse {
+    content: FlashcardData[];
+}
 
 function Flashcards() {
-
     const { courseId } = useParams();
-    const [flashCards, setFlashCards] = useState([]);
+    const [flashCards, setFlashCards] = useState<FlashcardsResponse | null>(null);
     const [isFlipped, setIsFlipped] = useState(false);
-    const [api, setApi] = useState();
-    const { user } = useUser(); // Clerk hook to get user information
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const { user } = useUser();
 
     useEffect(() => {
         GetFlashCards()
     }, [])
 
-    useEffect(() => {
-  console.log("✅ flashCards updated:", flashCards);
-}, [flashCards]);
-  
-
     const GetFlashCards = async () => {
-        if (!courseId || !user?.primaryEmailAddress?.emailAddress) return; // Ensure necessary data is available
+        if (!courseId || !user?.primaryEmailAddress?.emailAddress) return;
 
         try {
+            setLoading(true);
             const result = await axios.post('/api/study-type', {
                 courseId: courseId,
                 studyType: 'Flashcard',
             });
-        setFlashCards(result.data);
-            console.log("api result", result.data);
+            setFlashCards(result.data);
         } catch (error) {
             console.log('Error fetching flashcards:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
+    const handleNext = () => {
+        if (flashCards?.content && currentIndex < flashCards.content.length - 1) {
+            setCurrentIndex(prev => prev + 1);
+            setIsFlipped(false);
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentIndex > 0) {
+            setCurrentIndex(prev => prev - 1);
+            setIsFlipped(false);
+        }
+    };
+
+    const handleReset = () => {
+        setCurrentIndex(0);
+        setIsFlipped(false);
+    };
+
+    const handleCardSelect = (index: number) => {
+        setCurrentIndex(index);
+        setIsFlipped(false);
+    };
+
+    if (loading) {
+        return <LoadingState />;
+    }
+
+    if (!flashCards?.content?.length) {
+        return <EmptyState />;
+    }
+
+    const totalCards = flashCards.content.length;
+
     return (
-        <div >
-            <h2 className='font-bold text-2xl'> Flashcards</h2>
-            <p>Flashcards: The ultimate tool to Lock in conceptes</p>
-                   <div className='flex items-center justify-center'>
-                <Carousel className='w-full max-w-lg mx-auto mt-10'>
-                    <CarouselContent>
+        <div className="min-h-screen bg-background">
+            <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 max-w-6xl">
+                <div className="flex flex-col min-h-screen">
+                    {/* Header Section */}
+                    <div className="mb-4 sm:mb-6">
+                        <FlashcardHeader />
+                    </div>
 
-                        {flashCards?.content?.map((item, index) => (
-                            <CarouselItem key={index} className="flex items-center justify-center">
+                    {/* Progress Section */}
+                    <div className="mb-6 sm:mb-8">
+                        <ProgressNavigation
+                            currentIndex={currentIndex}
+                            totalCards={totalCards}
+                            onCardSelect={handleCardSelect}
+                        />
+                    </div>
 
-                                <FlashCardItem flashcard={item} isFlipped={isFlipped} setIsFlipped={setIsFlipped} />
-                            </CarouselItem>
-                        ))}
+                    {/* Flashcard Section - Responsive centered layout */}
+                    <div className="flex-1 flex items-center justify-center min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] mb-6 sm:mb-8">
+                        <FlashCardItem
+                            flashcard={flashCards.content[currentIndex]}
+                            isFlipped={isFlipped}
+                            setIsFlipped={setIsFlipped}
+                        />
+                    </div>
 
-
-
-
-                    </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
-                </Carousel>
+                    {/* Navigation Section */}
+                    <div className="mt-auto pb-4 sm:pb-6">
+                        <NavigationControls
+                            currentIndex={currentIndex}
+                            totalCards={totalCards}
+                            onNext={handleNext}
+                            onPrevious={handlePrevious}
+                            onReset={handleReset}
+                        />
+                    </div>
+                </div>
             </div>
-        {console.log("flashcard data state wla", flashCards?.content)}
-
         </div>
     )
 }
