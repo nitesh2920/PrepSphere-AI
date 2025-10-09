@@ -4,14 +4,18 @@ import Link from 'next/link';
 import axios from 'axios'
 import { Button } from '@/components/ui/button'; // Assuming Shadcn Button component
 import { RefreshCw } from 'lucide-react'
+import { toast } from 'sonner';
 
 function MaterialCardItem({ item, studyTypeContent, refreshData, course }) {
 
   const [loading, setLoading] = useState(false)
   // console.log('item.type',item.type)
   // console.log('studyTypeContent.[item.type]',studyTypeContent?.[item.type])
+  const isReady = Array.isArray(studyTypeContent?.[item.type]) && studyTypeContent?.[item.type]?.length > 0;
+
 
   const GenerateContent = async () => {
+    toast('Generating Content')
     setLoading(true)
     console.log('course hai', course)
     let chapters = ''
@@ -26,21 +30,23 @@ function MaterialCardItem({ item, studyTypeContent, refreshData, course }) {
     });
     setLoading(false)
     refreshData(true)
+    toast('Your content ready to view')
     // console.log('study-type', result)
     // console.log("ch", chapters)
-    console.log("studyTypecontent",studyTypeContent)
+    // console.log("studyTypecontent",studyTypeContent)
 
   }
   return (
+    <Link  href={'/course/'+course?.courseId+item.path}>
     <div className={`border shadow-md rounded-lg 
     p-5 flex flex-col  h-full
-    ${studyTypeContent?.[item.type]?.length == null && 'grayscale opacity-50'} 
+    ${!isReady && 'grayscale opacity-50'} 
     `}>
 
       {/* Status Badge */}
       <div className='  flex flex-col items-center flex-grow text-cneter'>
 
-        {studyTypeContent?.[item.type]?.length == null ? <h2 className='p-1 px-2 bg-gray-500 text-white rounded-full text-[12px] mb-2 '>
+        {!isReady ? <h2 className='p-1 px-2 bg-gray-500 text-white rounded-full text-[12px] mb-2 '>
           Generate
         </h2> :
           <h2 className='p-1 px-2 bg-green-500 text-white rounded-full text-[12px] mb-2 '>
@@ -63,14 +69,16 @@ function MaterialCardItem({ item, studyTypeContent, refreshData, course }) {
 
       </div>
 
-      {/* Action Button */}
-      {studyTypeContent?.[item.type]?.length == null ? <Button className="  mt-3 w-full" onClick={() => GenerateContent()}>
+      
+      {!isReady ? <Button className="  mt-3 w-full" onClick={() => GenerateContent()}>
         {loading && <RefreshCw className='animate-spin' />} Generate</Button>
         : <Button className="  mt-3 w-full">View</Button>}
       {/* {console.log('stct', [item.type])} */}
-      {  console.log('ya lst hai',studyTypeContent?.[item.type.toLowerCase()])}
-      {  console.log('ya lst hai t ya f',studyTypeContent?.[item.type.toLowerCase()]?.content?.length > 0)}
+      {/* {  console.log('ya lst hai',studyTypeContent?.[item.type.toLowerCase()])} */}
+      {/* { console.log('item.type lst mai',item.type)} */}
+      {/* {  console.log('ya lst hai t ya f',studyTypeContent?.[item.type.toLowerCase()]?.length == 0)} */}
     </div>
+     </Link> 
 
   );
 }
