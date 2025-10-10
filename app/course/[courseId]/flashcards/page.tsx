@@ -40,7 +40,25 @@ function Flashcards() {
                 courseId: courseId,
                 studyType: 'Flashcard',
             });
-            setFlashCards(result.data);
+
+            console.log("api result", result.data)
+            // Handle different possible data structures
+            let flashcardData = result.data;
+
+            // If data is directly an array, wrap it in content property
+            if (Array.isArray(result.data)) {
+                flashcardData = { content: result.data };
+            }
+            // If data has Flashcard property, use that
+            else if (result.data?.Flashcard && Array.isArray(result.data.Flashcard)) {
+                flashcardData = { content: result.data.Flashcard };
+            }
+            // If data has flashcard property, use that
+            else if (result.data?.flashcard && Array.isArray(result.data.flashcard)) {
+                flashcardData = { content: result.data.flashcard };
+            }
+
+            setFlashCards(flashcardData);
         } catch (error) {
             console.log('Error fetching flashcards:', error);
         } finally {
@@ -107,6 +125,7 @@ function Flashcards() {
                             isFlipped={isFlipped}
                             setIsFlipped={setIsFlipped}
                         />
+                        {console.log("flashcard hai", flashCards)}
                     </div>
 
                     {/* Navigation Section */}

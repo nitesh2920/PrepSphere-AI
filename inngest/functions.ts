@@ -2,8 +2,8 @@ import { text } from "drizzle-orm/pg-core";
 import { db } from "@/configs/db";
 import { inngest } from "./client";
 import { USER_TABLE } from "@/configs/schema";
-import { eq,and } from "drizzle-orm";
-import { generateNotesAIModel, generateFlashcards } from "@/configs/AiModel";
+import { eq, and } from "drizzle-orm";
+import { generateNotesAIModel, generateFlashcards, generateQuiz } from "@/configs/AiModel";
 import {
   CHAPTER_NOTES_TABLE,
   STUDY_MATERIAL_TABLE,
@@ -23,6 +23,7 @@ export const CreateNewUser = inngest.createFunction(
   { id: "create-user" },
   { event: "user.create" },
   async ({ event, step }) => {
+
     const { user } = event.data;
     const result = await step.run(
       "Check existing user and create New user if dont exists ",
@@ -105,26 +106,34 @@ export const GenerateStudyTypeContent = inngest.createFunction(
   { event: "studyType.content" },
 
   async ({ event, step }) => {
-    const { studyType, prompt, courseId,recordId } = event.data;
+    const { studyType, prompt, courseId, recordId } = event.data;
 
-    const FlashcardAiResult = await step.run(
-      "Generating FlashCard using ai",
+
+    const AiResult = await step.run(
+      "Generating AI result  using ai",
       async () => {
-        const result = await generateFlashcards(prompt);
+        const result =
+          studyType == 'Flashcard' ? await generateFlashcards(prompt) : await generateQuiz(prompt);
         const AIResult = JSON.parse(result);
         return AIResult;
+        console.log("AIResult", AIResult)
       }
     );
+
+
+
+
+
     const DbResult = await step.run("Save result to db", async () => {
       const result = await db.update(STUDY_TYPE_CONTENT_TABLE)
         .set({
-          content: FlashcardAiResult,
-          status:'Ready'
+          content: AiResult,
+          status: 'Ready'
         })
-        .where( eq(STUDY_TYPE_CONTENT_TABLE.id, recordId)
+        .where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId)
         );
 
-      return "Flashcard Data Inserted";
+      return "data inserted";
     });
   }
 );

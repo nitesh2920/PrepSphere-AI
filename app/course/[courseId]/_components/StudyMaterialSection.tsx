@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react'
-import MaterialCardItem from './MaterialCardItem'; 
+import MaterialCardItem from './MaterialCardItem';
 import axios from 'axios';
 import { BookOpen, Brain } from 'lucide-react';
 
@@ -11,7 +11,8 @@ interface StudyMaterialSectionProps {
 
 export default function StudyMaterialSection({ courseId, course }: StudyMaterialSectionProps) {
   const [studyTypeContent, setStudyTypeContent] = useState([])
-  
+  const [refreshKey, setRefreshKey] = useState(0)
+
   const materialList = [
     {
       name: 'Notes/Chapters',
@@ -25,7 +26,7 @@ export default function StudyMaterialSection({ courseId, course }: StudyMaterial
       desc: 'Strengthen your recall of key concepts with interactive flashcards designed for active learning.',
       icon: '/flashcard.png',
       path: '/flashcards',
-      type: 'flashcard'
+      type: 'Flashcard'
     },
     {
       name: 'Quiz',
@@ -58,12 +59,31 @@ export default function StudyMaterialSection({ courseId, course }: StudyMaterial
     );
   }
 
-  const GetStudyMaterial = async () => {
-    const result = await axios.post('/api/study-type', {
-      courseId: courseId,
-      studyType: 'ALL'
-    })
-    setStudyTypeContent(result.data)
+  const GetStudyMaterial = async (refresh?: boolean) => {
+    try {
+      console.log('📡 Fetching study material, refresh:', refresh)
+      
+      const result = await axios.post('/api/study-type', {
+        courseId: courseId,
+        studyType: 'ALL'
+      })
+      
+      console.log("📊 API Response:", result?.data)
+      console.log("📊 Available keys:", Object.keys(result?.data || {}))
+      
+      setStudyTypeContent(prevState => {
+        console.log("📝 Previous state:", prevState)
+        console.log("📝 New state:", result.data)
+        return { ...result.data }
+      })
+
+      if (refresh) {
+        console.log("🔄 Incrementing refresh key")
+        setRefreshKey(prev => prev + 1)
+      }
+    } catch (error) {
+      console.error("Error fetching study material:", error)
+    }
   }
 
   return (
@@ -74,12 +94,12 @@ export default function StudyMaterialSection({ courseId, course }: StudyMaterial
         </div>
         <h2 className='font-bold text-xl sm:text-2xl text-foreground'>Study Materials</h2>
       </div>
-      
+
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6'>
         {materialList.map((item, index) => (
-          <MaterialCardItem 
-            key={index} 
-            item={item} 
+          <MaterialCardItem
+            key={`${index}-${refreshKey}`}
+            item={item}
             studyTypeContent={studyTypeContent}
             course={course}
             refreshData={GetStudyMaterial}

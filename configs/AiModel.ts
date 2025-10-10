@@ -135,3 +135,53 @@ export async function generateFlashcards(prompt: string): Promise<string> {
   console.log("Flashcard AI Response:", response);
   return response;
 }
+
+export async function generateQuiz(prompt: string): Promise<string> {
+  const quizSchema: Schema = {
+    type: Type.ARRAY,
+    items: {
+      type: Type.OBJECT,
+      properties: {
+        question: { type: Type.STRING },
+        options: {
+          type: Type.ARRAY,
+          items: { type: Type.STRING },
+        },
+        answer: { type: Type.STRING },
+      },
+      required: ['question', 'options', 'answer'],
+    },
+  };
+
+  const config = {
+    responseMimeType: 'application/json',
+    responseSchema: quizSchema,
+    thinkingConfig: {
+      thinkingBudget: -1,
+    },
+  };
+
+  const contents = [
+    {
+      role: 'user',
+      parts: [{ text: prompt }],
+    },
+  ];
+
+
+  try {
+    const result = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents,
+      config,
+    });
+
+    const response = result.text ?? '';
+    console.log('Quiz AI Response:', response);
+
+    return response;
+  } catch (err) {
+    console.error('Error generating quiz:', err);
+    return '[]';
+  }
+}

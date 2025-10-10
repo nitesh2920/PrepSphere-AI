@@ -21,9 +21,10 @@ export async function POST(req: NextRequest) {
 
     const result = {
       notes: notes,
-      flashcard: contentList?.filter(item=>item.type == 'Flashcard'),
-      quiz: null,
-      qa: null
+      Flashcard: contentList?.filter(item=>item.type == 'Flashcard'),
+      Quiz: contentList?.filter(item=>item.type == 'quiz'),
+      QA: contentList?.filter(item=>item.type == 'qa')
+     
     };
 
     return NextResponse.json(result);
@@ -40,8 +41,7 @@ export async function POST(req: NextRequest) {
       .select()
       .from(STUDY_TYPE_CONTENT_TABLE)
       .where(and(
-        eq(STUDY_TYPE_CONTENT_TABLE?.courseId, courseId),
-        eq(STUDY_TYPE_CONTENT_TABLE.type, studyType)
+        eq(STUDY_TYPE_CONTENT_TABLE?.courseId, courseId)
       ))
 
     return NextResponse.json(  result[0] ? JSON.parse(JSON.stringify(result[0])) : null

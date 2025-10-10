@@ -26,7 +26,7 @@ function FlashCardItem({ flashcard, isFlipped, setIsFlipped }: FlashCardItemProp
       <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
         <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
           {/* Front Card */}
-          <Card 
+          <Card
             onClick={handleClick}
             className="group relative p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-primary via-primary/90 to-primary/80 
                        text-primary-foreground rounded-2xl sm:rounded-3xl flex items-center justify-center cursor-pointer 
@@ -43,7 +43,7 @@ function FlashCardItem({ flashcard, isFlipped, setIsFlipped }: FlashCardItemProp
               <div className="absolute top-1/3 left-3 sm:left-6 w-1 h-12 sm:h-20 bg-white/20 rounded-full" />
               <Sparkles className="absolute top-4 left-4 sm:top-8 sm:left-8 w-4 h-4 sm:w-6 sm:h-6 text-white/30 animate-pulse" />
             </div>
-            
+
             {/* Content */}
             <div className="relative z-10 text-center space-y-3 sm:space-y-6 max-w-full px-2 sm:px-4">
               <div className="w-12 h-12 sm:w-16 lg:w-20 sm:h-16 lg:h-20 mx-auto bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-3 sm:mb-6 shadow-lg">
@@ -60,14 +60,14 @@ function FlashCardItem({ flashcard, isFlipped, setIsFlipped }: FlashCardItemProp
                 </div>
               </div>
             </div>
-            
+
             {/* Hover Glow Effect */}
             <div className="absolute inset-0 bg-white/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
           </Card>
 
           {/* Back Card */}
-          <Card 
+          <Card
             onClick={handleClick}
             className="group relative p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-card via-card/95 to-muted/50 
                        text-card-foreground rounded-2xl sm:rounded-3xl flex items-center justify-center cursor-pointer 
@@ -84,7 +84,7 @@ function FlashCardItem({ flashcard, isFlipped, setIsFlipped }: FlashCardItemProp
               <div className="absolute top-1/3 right-3 sm:right-6 w-1 h-12 sm:h-20 bg-green-300/40 rounded-full" />
               <Target className="absolute top-4 right-4 sm:top-8 sm:right-8 w-4 h-4 sm:w-6 sm:h-6 text-green-400/60 animate-pulse" />
             </div>
-            
+
             {/* Content */}
             <div className="relative z-10 text-center space-y-3 sm:space-y-6 max-w-full px-2 sm:px-4">
               <div className="w-12 h-12 sm:w-16 lg:w-20 sm:h-16 lg:h-20 mx-auto bg-green-100 backdrop-blur-sm rounded-full flex items-center justify-center mb-3 sm:mb-6 shadow-lg border border-green-200">
@@ -101,7 +101,7 @@ function FlashCardItem({ flashcard, isFlipped, setIsFlipped }: FlashCardItemProp
                 </div>
               </div>
             </div>
-            
+
             {/* Hover Glow Effect */}
             <div className="absolute inset-0 bg-green-50/30 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="absolute -inset-1 bg-gradient-to-r from-green-200/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />

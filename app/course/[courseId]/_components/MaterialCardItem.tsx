@@ -11,30 +11,85 @@ import { toast } from 'sonner';
 interface MaterialCardItemProps {
   item: any;
   studyTypeContent: any;
-  refreshData: (refresh: boolean) => void;
+  refreshData: (refresh?: boolean) => void;
   course: any;
 }
 
 function MaterialCardItem({ item, studyTypeContent, refreshData, course }: MaterialCardItemProps) {
   const [loading, setLoading] = useState(false)
-  const isReady = Array.isArray(studyTypeContent?.[item.type]) && studyTypeContent?.[item.type]?.length > 0;
+
+  // Debug for all items to see what's happening
+  console.log(`🔍 ${item.name} Debug:`)
+  console.log('studyTypeContent:', studyTypeContent)
+  console.log('Available keys:', Object.keys(studyTypeContent || {}))
+  console.log('Looking for:', item.type, item.name)
+
+  // Check if content is ready - try multiple possible keys
+  const contentData = studyTypeContent?.[item.type] ||
+    studyTypeContent?.[item.type.toLowerCase()] ||
+    studyTypeContent?.[item.name] ||
+    studyTypeContent?.[item.name.toLowerCase()]
+
+  const isReady = Array.isArray(contentData) && contentData.length > 0
+console.log("areeeeee",studyTypeContent)
+  console.log('contentData:', contentData)
+  console.log('isReady:', isReady)
 
   const GenerateContent = async () => {
-    toast('Generating Content')
-    setLoading(true)
-    let chapters = ''
-    course?.courseLayout.chapters.forEach((chapter: any) => {
-      chapters += chapter.chapter_title + ', ';
-    });
+    const loadingToast = toast.loading(`Generating ${item.name}...`, {
+      duration: Infinity,
+    })
 
-    const result = await axios.post('/api/study-type-content', {
-      courseId: course?.courseId,
-      type: item.name,
-      chapters: chapters
-    });
-    setLoading(false)
-    refreshData(true)
-    toast('Your content ready to view')
+    setLoading(true)
+    try {
+      let chapters = ''
+      course?.courseLayout.chapters.forEach((chapter: any) => {
+        chapters += chapter.chapter_title + ', ';
+      });
+
+      // Step 1: Generate content via Inngest
+      // console.log('🚀 Step 1: Calling /api/study-type-content')
+      await axios.post('/api/study-type-content', {
+        courseId: course?.courseId,
+        type: item.type,  // Use item.type (e.g., 'Flashcard') not item.name (e.g., 'Flashcards')
+        chapters: chapters
+      });
+      console.log('type', item.type)
+
+      // Step 2: Wait for Inngest to complete, then refresh multiple times
+      setTimeout(async () => {
+        try {
+          console.log('🔄 Step 2: First refresh after generation')
+          refreshData(true)
+
+          // Try again after more time
+          setTimeout(() => {
+            console.log('🔄 Step 3: Second refresh after generation')
+            refreshData(true)
+          }, 2000)
+
+          // Final attempt
+          setTimeout(() => {
+            console.log('🔄 Step 4: Final refresh after generation')
+            refreshData(true)
+          }, 4000)
+
+          toast.dismiss(loadingToast)
+          toast.success(`${item.name} ready to view!`)
+        } catch (error) {
+          console.error('Error in post-generation steps:', error)
+          toast.dismiss(loadingToast)
+          toast.error('Generated but failed to refresh. Please reload the page.')
+        }
+      }, 5000)
+
+      setLoading(false)
+    } catch (error) {
+      console.error('Error in generation:', error)
+      toast.dismiss(loadingToast)
+      setLoading(false)
+      toast.error(`Error generating ${item.name}. Please try again.`)
+    }
   }
 
   const CardWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -94,8 +149,8 @@ function MaterialCardItem({ item, studyTypeContent, refreshData, course }: Mater
           {/* Action Button */}
           <div className="mt-6">
             {!isReady ? (
-              <Button 
-                className="w-full" 
+              <Button
+                className="w-full"
                 onClick={(e) => {
                   e.preventDefault();
                   GenerateContent();
