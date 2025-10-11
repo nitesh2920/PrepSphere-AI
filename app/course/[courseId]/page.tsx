@@ -1,17 +1,20 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import axios from "axios"
 import CourseIntroCard from './_components/CourseIntro'
 import StudyMaterialSection from './_components/StudyMaterialSection'
 import ChapterList from './_components/ChapterList'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft } from 'lucide-react'
 
 export default function Course() {
     const [course, setCourse] = useState(null)
     const [loading, setLoading] = useState(true);
     const { courseId } = useParams()
+    const router = useRouter()
 
     useEffect(() => {
         GetCourse()
@@ -34,6 +37,8 @@ export default function Course() {
             <div className="min-h-screen bg-background">
                 <div className="container mx-auto px-4 py-6 max-w-6xl">
                     <div className="space-y-8">
+                        {/* Back Button Skeleton */}
+                        <Skeleton className="h-10 w-32" />
                         {/* Course Intro Skeleton */}
                         <Card>
                             <CardContent className="p-6 sm:p-8">
@@ -96,6 +101,16 @@ export default function Course() {
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-6 max-w-6xl">
                 <div className="space-y-8">
+                    {/* Back to Dashboard Button */}
+                    <Button 
+                        variant="outline" 
+                        onClick={() => router.push('/dashboard')}
+                        className="flex items-center space-x-2"
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                        <span>Back to Dashboard</span>
+                    </Button>
+                    
                     <CourseIntroCard course={course} />
                     <StudyMaterialSection courseId={courseId as string} course={course} />
                     {course && <ChapterList course={course} />}

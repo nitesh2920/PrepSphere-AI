@@ -5,6 +5,7 @@ export const USER_TABLE = pgTable('users', {
   name: varchar('name', { length: 256 }).notNull(),
   email: varchar('email', { length: 256 }).notNull(),
   isMember: boolean('isMember').default(false).notNull(),
+  customerId:varchar(),
 });
 
 
@@ -37,3 +38,10 @@ export const STUDY_TYPE_CONTENT_TABLE = pgTable('studyTypeContent', {
     type: varchar().notNull(),
     status:varchar().default('Generating')
 })
+
+export const PAYMENT_RECORD_TABLE = pgTable('paymentRecord', {
+  id: serial('id').primaryKey(),
+  customerId: varchar('customerId', { length: 256 }),
+  sessionId: varchar('sessionId', { length: 256 }),
+
+});

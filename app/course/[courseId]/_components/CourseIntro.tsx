@@ -18,16 +18,16 @@ function CourseIntroCard({ course }: CourseIntroCardProps) {
         <div className='flex flex-col sm:flex-row gap-6 items-start sm:items-center'>
           <div className="flex-shrink-0">
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary/10 rounded-2xl flex items-center justify-center">
-              <Image 
-                src={'/knowledge.png'} 
-                alt={'Study material icon'} 
-                width={48} 
+              <Image
+                src={'/knowledge.png'}
+                alt={'Study material icon'}
+                width={48}
                 height={48}
                 className="object-contain"
               />
             </div>
           </div>
-          
+
           <div className="flex-1 space-y-4">
             <div>
               <h1 className='font-bold text-xl sm:text-2xl lg:text-3xl text-foreground leading-tight'>
@@ -35,6 +35,7 @@ function CourseIntroCard({ course }: CourseIntroCardProps) {
               </h1>
               <p className="text-muted-foreground mt-2 leading-relaxed">
                 {course?.courseLayout?.course_summary}
+                {console.log("course hai na", course)}
               </p>
             </div>
 
@@ -52,12 +53,8 @@ function CourseIntroCard({ course }: CourseIntroCardProps) {
                 <span className="font-medium text-foreground">{totalChapters} Chapters</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Clock className="w-4 h-4 text-green-600" />
-                <span className="font-medium text-foreground">2-3 Hours</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
                 <Target className="w-4 h-4 text-blue-600" />
-                <span className="font-medium text-foreground">Interview Prep</span>
+                <span className="font-medium text-foreground">{course.courseType}</span>
               </div>
             </div>
           </div>

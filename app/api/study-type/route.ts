@@ -15,16 +15,16 @@ export async function POST(req: NextRequest) {
 
     // Get The All Other Study Type Records
 
-      const contentList = await db.select().from(STUDY_TYPE_CONTENT_TABLE)
+    const contentList = await db.select().from(STUDY_TYPE_CONTENT_TABLE)
       .where(eq(STUDY_TYPE_CONTENT_TABLE?.courseId, courseId))
 
 
     const result = {
       notes: notes,
-      Flashcard: contentList?.filter(item=>item.type == 'Flashcard'),
-      Quiz: contentList?.filter(item=>item.type == 'quiz'),
-      QA: contentList?.filter(item=>item.type == 'qa')
-     
+      Flashcard: contentList?.filter(item => item.type == 'Flashcard'),
+      Quiz: contentList?.filter(item => item.type == 'quiz'),
+      QA: contentList?.filter(item => item.type == 'qa')
+
     };
 
     return NextResponse.json(result);
@@ -36,15 +36,15 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(notes);
   }
-  else{
-     const result = await db
+  else {
+    const result = await db
       .select()
       .from(STUDY_TYPE_CONTENT_TABLE)
       .where(and(
-        eq(STUDY_TYPE_CONTENT_TABLE?.courseId, courseId)
+        eq(STUDY_TYPE_CONTENT_TABLE?.courseId, courseId),
+        eq(STUDY_TYPE_CONTENT_TABLE?.type, studyType)
       ))
 
-    return NextResponse.json(  result[0] ? JSON.parse(JSON.stringify(result[0])) : null
-);
+    return NextResponse.json(result[0] ? JSON.parse(JSON.stringify(result[0])) : null);
   }
 }
