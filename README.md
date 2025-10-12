@@ -17,7 +17,7 @@
 
 ## 🌟 **What is PrepSphere AI?**
 
-PrepSphere AI is a revolutionary study companion that transforms the way students prepare for exams and interviews. Using advanced AI technology, it generates personalized study materials including comprehensive notes, interactive flashcards, and challenging quizzes tailored to your learning needs.
+PrepSphere AI is a  study companion that transforms the way students, professionals to prepare for exams , interviews or to learn any topic. Using advanced AI technology, it generates personalized study materials including comprehensive notes, interactive flashcards, and challenging quizzes tailored to your learning needs.
 
 ### ✨ **Key Features**
 
