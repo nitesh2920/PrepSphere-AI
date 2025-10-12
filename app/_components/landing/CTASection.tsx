@@ -100,63 +100,44 @@ const CTASection = () => {
             Join thousands of students already succeeding with PrepSphere AI.
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* CTA Button */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12 max-w-2xl mx-auto"
+            className="flex justify-center items-center mb-12"
           >
             {isSignedIn ? (
-              <Link href="/dashboard" className="w-full sm:w-auto">
+              <Link href="/dashboard">
                 <motion.div
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full"
                 >
                   <Button 
                     size="lg" 
-                    className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 px-12 py-4 text-lg font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit"
+                    className="bg-white text-gray-900 hover:bg-gray-100 px-16 py-6 text-xl font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit min-w-[280px]"
                   >
                     Go to Dashboard
-                    <ArrowRight className="ml-2" size={20} />
+                    <ArrowRight className="ml-3" size={24} />
                   </Button>
                 </motion.div>
               </Link>
             ) : (
-              <>
-                <Link href="/sign-up" className="w-full sm:w-auto">
-                  <motion.div
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full"
+              <Link href="/sign-up">
+                <motion.div
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button 
+                    size="lg" 
+                    className="bg-white text-gray-900 hover:bg-gray-100 px-16 py-6 text-xl font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit min-w-[280px]"
                   >
-                    <Button 
-                      size="lg" 
-                      className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 px-12 py-4 text-lg font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit"
-                    >
-                      Get Started
-                      <ArrowRight className="ml-2" size={20} />
-                    </Button>
-                  </motion.div>
-                </Link>
-                <Link href="/sign-in" className="w-full sm:w-auto">
-                  <motion.div
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full"
-                  >
-                    <Button 
-                      variant="outline" 
-                      size="lg" 
-                      className="w-full sm:w-auto bg-transparent border-2 border-white/50 text-white hover:bg-white/10 hover:border-white px-12 py-4 text-lg font-semibold rounded-2xl transition-all duration-300 font-outfit"
-                    >
-                      Book Demo
-                    </Button>
-                  </motion.div>
-                </Link>
-              </>
+                    Get Started
+                    <ArrowRight className="ml-3" size={24} />
+                  </Button>
+                </motion.div>
+              </Link>
             )}
           </motion.div>
 

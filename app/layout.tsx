@@ -12,6 +12,57 @@ import { Provider } from "./provider"
 export const metadata: Metadata = {
   title: "PrepSphere AI",
   description: "PrepSphere AI : Exam and interview material generator",
+  manifest: '/manifest.json',
+  keywords: ['AI', 'study materials', 'exam preparation', 'interview prep', 'education', 'learning'],
+  authors: [{ name: 'PrepSphere AI' }],
+  creator: 'PrepSphere AI',
+  publisher: 'PrepSphere AI',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  icons: {
+    icon: [
+      {
+        url: '/favicon.ico',
+        sizes: '32x32',
+      },
+      {
+        url: '/logo-dark.svg',
+        type: 'image/svg+xml',
+      },
+    ],
+    apple: [
+      {
+        url: '/apple-touch-icon.svg',
+        sizes: '180x180',
+        type: 'image/svg+xml',
+      },
+    ],
+  },
+  openGraph: {
+    title: 'PrepSphere AI',
+    description: 'PrepSphere AI : Exam and interview material generator',
+    url: 'https://prepsphereai.vercel.app/',
+    siteName: 'PrepSphere AI',
+    images: [
+      {
+        url: '/logo-dark.svg',
+        width: 200,
+        height: 200,
+        alt: 'PrepSphere AI Logo',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'PrepSphere AI',
+    description: 'PrepSphere AI : Exam and interview material generator',
+    images: ['/logo-dark.svg'],
+  },
 };
 
 const outfit = Outfit({
