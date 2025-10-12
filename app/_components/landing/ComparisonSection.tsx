@@ -27,19 +27,13 @@ const ComparisonSection = () => {
       description: "Test knowledge with instant feedback"
     },
     {
-      feature: "Smart Flashcards",
+      feature: "Generate Flashcards",
       prepSphere: true,
       chatgpt: false,
       description: "Spaced repetition for better retention"
     },
     {
-      feature: "Personalized Study Materials",
-      prepSphere: true,
-      chatgpt: false,
-      description: "Tailored content for your level"
-    },
-    {
-      feature: "Comprehensive Notes",
+      feature: "Generate Notes",
       prepSphere: true,
       chatgpt: false,
       description: "Structured, downloadable study guides"
@@ -48,13 +42,7 @@ const ComparisonSection = () => {
       feature: "Multi-format Learning",
       prepSphere: true,
       chatgpt: false,
-      description: "Notes, quizzes, flashcards in one place"
-    },
-    {
-      feature: "Exam Preparation Focus",
-      prepSphere: true,
-      chatgpt: false,
-      description: "Designed specifically for exam success"
+      description: "Notes, quizzes, flashcards, Questions & answers in one place"
     }
   ]
 
@@ -79,33 +67,33 @@ const ComparisonSection = () => {
   }
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-slate-800">
-      <div className="container mx-auto px-4">
+    <section className="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-slate-800">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <Target size={16} />
+          <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4">
+            <Target size={14} className="sm:w-4 sm:h-4" />
             Why Choose PrepSphere AI
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-outfit">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 font-outfit px-4 sm:px-0">
             Why Choose PrepSphere AI Over{' '}
             <span className="bg-gradient-to-r from-orange-500 to-amber-500 dark:from-orange-400 dark:to-amber-400 bg-clip-text text-transparent">
               Generic Solutions
             </span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-outfit">
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-outfit px-4 sm:px-0">
             Discover how PrepSphere AI's specialized learning tools outperform
             general-purpose solutions for serious students and professionals.
           </p>
         </motion.div>
 
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
             {/* PrepSphere AI Card */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -114,20 +102,20 @@ const ComparisonSection = () => {
               transition={{ duration: 0.6 }}
             >
               <Card className="h-full bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/10 dark:to-amber-900/10 border-2 border-orange-200 dark:border-orange-700/50">
-                <CardHeader className="text-center pb-6">
-                  <div className="w-16 h-16  rounded-2xl flex items-center justify-center mx-auto mb-4 p-3">
+                <CardHeader className="text-center pb-4 sm:pb-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 p-2 sm:p-3">
                     <Image
                       src="/logo-dark.svg"
                       alt="PrepSphere AI"
-                      width={40}
-                      height={40}
-                      className="w-full h-full object-contain"
+                      width={32}
+                      height={32}
+                      className="w-full h-full object-contain sm:w-10 sm:h-10"
                     />
                   </div>
-                  <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     PrepSphere AI
                   </CardTitle>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
                     Purpose-built for learning success
                   </p>
                 </CardHeader>
@@ -172,7 +160,7 @@ const ComparisonSection = () => {
                     <BookOpen size={28} className="text-white" />
                   </div>
                   <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
-                    Generic ChatGPT
+                    Generic AI
                   </CardTitle>
                   <p className="text-gray-600 dark:text-gray-300">
                     General-purpose AI assistant

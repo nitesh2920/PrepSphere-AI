@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Sparkles, BookOpen, Brain, Zap } from 'lucide-react'
 import Link from 'next/link'
 import { useUser } from '@clerk/nextjs'
+import { useSmoothScroll } from '@/app/_hooks/useSmoothScroll'
 
 
 const HeroSection = () => {
   const { isSignedIn } = useUser()
+  const { scrollToElement } = useSmoothScroll()
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -73,7 +75,7 @@ const HeroSection = () => {
         ))}
       </div>
 
-      <div className="container mx-auto px-4 py-20 relative z-10">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-16 sm:py-20 relative z-10">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -81,10 +83,10 @@ const HeroSection = () => {
           className="text-center max-w-5xl mx-auto"
         >
           {/* Badge */}
-          <motion.div variants={itemVariants} className="mb-8">
-            <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 px-4 py-2 rounded-full text-sm font-medium font-outfit">
-              <img src="/logo.svg" alt="PrepSphere AI" className="w-4 h-4 dark:hidden" />
-              <img src="/logo-dark.svg" alt="PrepSphere AI" className="w-4 h-4 hidden dark:block" />
+          <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
+            <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium font-outfit">
+              <img src="/logo.svg" alt="PrepSphere AI" className="w-3 h-3 sm:w-4 sm:h-4 dark:hidden" />
+              <img src="/logo-dark.svg" alt="PrepSphere AI" className="w-3 h-3 sm:w-4 sm:h-4 hidden dark:block" />
               Smart Learning Platform
             </div>
           </motion.div>
@@ -92,7 +94,7 @@ const HeroSection = () => {
           {/* Main Headline */}
           <motion.h1
             variants={itemVariants}
-            className="text-4xl md:text-6xl lg:text-7xl font-semibold text-gray-900 dark:text-white mb-6 leading-tight font-outfit"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6 leading-tight font-outfit px-2 sm:px-0"
           >
             Master Any Subject with{' '}
             <span className="bg-gradient-to-r from-orange-500 to-amber-500 dark:from-orange-400 dark:to-amber-400 bg-clip-text text-transparent">
@@ -103,7 +105,7 @@ const HeroSection = () => {
           {/* Subtitle */}
           <motion.p
             variants={itemVariants}
-            className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-6 max-w-3xl mx-auto leading-relaxed font-outfit"
+            className="text-lg sm:text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 max-w-3xl mx-auto leading-relaxed font-outfit px-4 sm:px-0"
           >
             Create personalized study materials, practice quizzes, and comprehensive notes.
             Your complete learning companion for academic excellence.
@@ -112,46 +114,48 @@ const HeroSection = () => {
           {/* Credit Highlight */}
           <motion.div
             variants={itemVariants}
-            className="mb-8"
+            className="mb-6 sm:mb-8 px-4 sm:px-0"
           >
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30 text-orange-700 dark:text-orange-400 px-6 py-3 rounded-full text-lg font-medium border border-orange-200 dark:border-orange-800">
-              <Zap className="w-5 h-5" />
-              Start with 5 Free Credits • Upgrade to 50 Credits
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30 text-orange-700 dark:text-orange-400 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-lg font-medium border border-orange-200 dark:border-orange-800">
+              <Zap className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+              <span className="text-center">Start with 5 Free Credits • Upgrade to 50 Credits</span>
             </div>
           </motion.div>
 
           {/* CTA Button */}
           <motion.div
             variants={itemVariants}
-            className="flex justify-center items-center mb-12"
+            className="flex justify-center items-center mb-8 sm:mb-12 px-4 sm:px-0"
           >
             {isSignedIn ? (
-              <Link href="/dashboard">
+              <Link href="/dashboard" className="w-full sm:w-auto">
                 <motion.div
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
+                  className="w-full sm:w-auto"
                 >
                   <Button
                     size="lg"
-                    className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white border-0 px-16 py-6 text-xl font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit min-w-[280px]"
+                    className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white border-0 px-8 sm:px-16 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit min-w-0 sm:min-w-[280px]"
                   >
                     Go to Dashboard
-                    <ArrowRight className="ml-3" size={24} />
+                    <ArrowRight className="ml-2 sm:ml-3" size={20} />
                   </Button>
                 </motion.div>
               </Link>
             ) : (
-              <Link href="/sign-up">
+              <Link href="/sign-up" className="w-full sm:w-auto">
                 <motion.div
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
+                  className="w-full sm:w-auto"
                 >
                   <Button
                     size="lg"
-                    className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white border-0 px-16 py-6 text-xl font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit min-w-[280px]"
+                    className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white border-0 px-8 sm:px-16 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit min-w-0 sm:min-w-[280px]"
                   >
                     Get Started
-                    <ArrowRight className="ml-3" size={24} />
+                    <ArrowRight className="ml-2 sm:ml-3" size={20} />
                   </Button>
                 </motion.div>
               </Link>
@@ -166,12 +170,7 @@ const HeroSection = () => {
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
-        onClick={() => {
-          const featuresSection = document.getElementById('features')
-          if (featuresSection) {
-            featuresSection.scrollIntoView({ behavior: 'smooth' })
-          }
-        }}
+        onClick={() => scrollToElement('#features', 80)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >

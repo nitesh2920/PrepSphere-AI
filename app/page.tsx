@@ -4,7 +4,6 @@ import Features from '@/components/features-1'
 import ComparisonSection from './_components/landing/ComparisonSection'
 import PricingSection from './_components/landing/PricingSection'
 import FAQSection from './_components/landing/FAQSection'
-import CTASection from './_components/landing/CTASection'
 import Footer from './_components/landing/Footer'
 import LenisProvider from './_components/providers/LenisProvider'
 

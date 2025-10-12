@@ -74,26 +74,26 @@ const PricingSection = () => {
   }
 
   return (
-    <section className="py-20 bg-white dark:bg-slate-900">
-      <div className="container mx-auto px-4">
+    <section className="py-12 sm:py-16 lg:py-20 bg-white dark:bg-slate-900">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <Zap size={16} />
+          <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4">
+            <Zap size={14} className="sm:w-4 sm:h-4" />
             Credit-Based Pricing
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-outfit">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 font-outfit px-4 sm:px-0">
             Choose Your{' '}
             <span className="bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-400 dark:to-orange-500 bg-clip-text text-transparent">
               Learning Plan
             </span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-outfit">
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-outfit px-4 sm:px-0">
             Start with 5 free credits, upgrade to Pro for 50 credits per month. Each credit generates a complete course with study materials.
           </p>
         </motion.div>
@@ -103,34 +103,34 @@ const PricingSection = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto"
         >
           {plans.map((plan, index) => (
             <motion.div key={index} variants={cardVariants}>
-              <Card className={`relative flex flex-col h-full ${plan.popular ? 'ring-2 ring-orange-500 shadow-2xl scale-105' : 'shadow-lg'} transition-all duration-300 hover:shadow-2xl`}>
+              <Card className={`relative flex flex-col h-full ${plan.popular ? 'ring-2 ring-orange-500 shadow-2xl lg:scale-105' : 'shadow-lg'} transition-all duration-300 hover:shadow-2xl`}>
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-gradient-to-r from-orange-500 to-amber-500 dark:from-orange-500 dark:to-amber-500 text-white px-6 py-2 rounded-full text-sm font-medium">
+                  <div className="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-gradient-to-r from-orange-500 to-amber-500 dark:from-orange-500 dark:to-amber-500 text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
                       Most Popular
                     </div>
                   </div>
                 )}
 
-                <CardHeader className="text-center pb-6">
+                <CardHeader className="text-center pb-4 sm:pb-6">
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
-                    className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${plan.gradient} flex items-center justify-center mx-auto mb-4`}
+                    className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-r ${plan.gradient} flex items-center justify-center mx-auto mb-3 sm:mb-4`}
                   >
-                    <plan.icon size={28} className="text-white" />
+                    <plan.icon size={24} className="sm:w-7 sm:h-7 text-white" />
                   </motion.div>
 
-                  <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
                     {plan.name}
                   </CardTitle>
 
-                  <div className="mb-4">
-                    <span className="text-4xl font-bold text-gray-900 dark:text-white">{plan.price}</span>
-                    <span className="text-gray-600 dark:text-gray-400 ml-2">/{plan.period}</span>
+                  <div className="mb-3 sm:mb-4">
+                    <span className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">{plan.price}</span>
+                    <span className="text-gray-600 dark:text-gray-400 ml-2 text-sm sm:text-base">/{plan.period}</span>
                   </div>
 
                   {/* Credits Display */}

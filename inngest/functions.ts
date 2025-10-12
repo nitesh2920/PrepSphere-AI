@@ -3,7 +3,7 @@ import { db } from "@/configs/db";
 import { inngest } from "./client";
 import { USER_TABLE } from "@/configs/schema";
 import { eq, and } from "drizzle-orm";
-import { generateNotesAIModel, generateFlashcards, generateQuiz } from "@/configs/AiModel";
+import { generateNotesAIModel, generateFlashcards, generateQuiz, generateQA } from "@/configs/AiModel";
 import {
   CHAPTER_NOTES_TABLE,
   STUDY_MATERIAL_TABLE,
@@ -121,12 +121,36 @@ export const GenerateStudyTypeContent = inngest.createFunction(
 
 
     const AiResult = await step.run(
-      "Generating AI result  using ai",
+      "Generating AI result using ai",
       async () => {
-        const result =
-          studyType == 'Flashcard' ? await generateFlashcards(prompt) : await generateQuiz(prompt);
-        const AIResult = JSON.parse(result);
-        return AIResult;
+        try {
+          console.log(`Starting AI generation for studyType: ${studyType}`);
+          let result;
+          
+          if (studyType === 'Flashcard') {
+            result = await generateFlashcards(prompt);
+          } else if (studyType === 'quiz') {
+            result = await generateQuiz(prompt);
+          } else if (studyType === 'qa') {
+            result = await generateQA(prompt);
+          } else {
+            throw new Error(`Unsupported study type: ${studyType}`);
+          }
+          
+          console.log(`AI generation completed for ${studyType}. Result length:`, result?.length);
+          
+          if (!result || result.trim() === '') {
+            throw new Error(`Empty result from AI for study type: ${studyType}`);
+          }
+          
+          const AIResult = JSON.parse(result);
+          console.log(`Parsed AI result for ${studyType}:`, Array.isArray(AIResult) ? `Array with ${AIResult.length} items` : typeof AIResult);
+          
+          return AIResult;
+        } catch (error) {
+          console.error(`Error in AI generation for ${studyType}:`, error);
+          throw error;
+        }
       }
     );
 
@@ -135,15 +159,44 @@ export const GenerateStudyTypeContent = inngest.createFunction(
 
 
     const DbResult = await step.run("Save result to db", async () => {
-      const result = await db.update(STUDY_TYPE_CONTENT_TABLE)
-        .set({
-          content: AiResult,
-          status: 'Ready'
-        })
-        .where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId)
-        );
+      try {
+        console.log(`Saving to database - recordId: ${recordId}, studyType: ${studyType}`);
+        console.log(`Content to save:`, Array.isArray(AiResult) ? `Array with ${AiResult.length} items` : typeof AiResult);
+        
+        const result = await db.update(STUDY_TYPE_CONTENT_TABLE)
+          .set({
+            content: AiResult,
+            status: 'Ready'
+          })
+          .where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId));
 
-      return "data inserted";
+        console.log(`Database update result:`, result);
+        
+        // Verify the data was saved
+        const verification = await db
+          .select()
+          .from(STUDY_TYPE_CONTENT_TABLE)
+          .where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId));
+          
+        console.log(`Verification - Record found:`, verification.length > 0);
+        if (verification.length > 0) {
+          console.log(`Saved content status:`, verification[0].status);
+          console.log(`Saved content type:`, typeof verification[0].content);
+        }
+
+        return "data inserted successfully";
+      } catch (error) {
+        console.error(`Error saving to database:`, error);
+        throw error;
+      }
     });
+
+    console.log(`GenerateStudyTypeContent completed for ${studyType}`);
+    return { 
+      success: true, 
+      studyType, 
+      recordId, 
+      message: "Content generated and saved successfully" 
+    };
   }
 );
