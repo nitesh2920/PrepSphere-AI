@@ -10,7 +10,7 @@
   [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
   [![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel)](https://vercel.com/)
   
-  [🚀 Live Demo](https://prepsphere.ai) • [📖 Documentation](#documentation) • [🐛 Report Bug](https://github.com/yourusername/prepsphere-ai/issues) • [✨ Request Feature](https://github.com/yourusername/prepsphere-ai/issues)
+  [🚀 Live Demo]() • [🐛 Report Bug](https://github.com/nitesh2920/prepsphere-ai/issues) • [✨ Request Feature](https://github.com/nitesh2920/prepsphere-ai/issues)
 </div>
 
 ---
