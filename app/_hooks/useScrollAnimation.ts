@@ -11,11 +11,11 @@ interface UseScrollAnimationOptions {
 
 export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
   const { threshold = 0.1, triggerOnce = true, delay = 0 } = options
-  
+
   const ref = useRef(null)
-  const isInView = useInView(ref, { 
-    threshold, 
-    once: triggerOnce 
+  const isInView = useInView(ref, {
+    threshold,
+    once: triggerOnce
   })
   const controls = useAnimation()
 
@@ -24,7 +24,7 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
       const timer = setTimeout(() => {
         controls.start('visible')
       }, delay * 1000)
-      
+
       return () => clearTimeout(timer)
     } else {
       controls.start('hidden')
@@ -36,39 +36,39 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
 
 // Predefined animation variants
 export const fadeInUp = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     y: 60,
     transition: { duration: 0.6, ease: "easeOut" }
   },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.8, ease: "easeOut" }
   }
 }
 
 export const fadeInLeft = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     x: -60,
     transition: { duration: 0.6, ease: "easeOut" }
   },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     x: 0,
     transition: { duration: 0.8, ease: "easeOut" }
   }
 }
 
 export const fadeInRight = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     x: 60,
     transition: { duration: 0.6, ease: "easeOut" }
   },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     x: 0,
     transition: { duration: 0.8, ease: "easeOut" }
   }
@@ -86,13 +86,13 @@ export const staggerContainer = {
 }
 
 export const scaleIn = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     scale: 0.8,
     transition: { duration: 0.6, ease: "easeOut" }
   },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     scale: 1,
     transition: { duration: 0.8, ease: "easeOut" }
   }

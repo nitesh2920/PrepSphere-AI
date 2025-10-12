@@ -30,8 +30,8 @@ const FAQSection = () => {
       answer: "PrepSphere AI supports a wide range of subjects including STEM fields, humanities, business, languages, professional certifications, and more. Whether you're preparing for academic exams, professional certifications, or skill development, our AI can create relevant study materials."
     },
     {
-      question: "Can I export my study materials?",
-      answer: "Export functionality is coming soon! Pro users will be able to export their notes, quizzes, and flashcards to PDF format for offline studying. You'll also be able to print your materials or share them with study groups."
+      question: "Can I access my study materials offline?",
+      answer: "Yes! PrepSphere AI is a Progressive Web App (PWA) that works offline once loaded. You can access your generated study materials even without an internet connection. Additional export features are planned for future updates."
     },
     {
       question: "How does the progress tracking work?",
@@ -68,26 +68,26 @@ const FAQSection = () => {
   }
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-slate-800">
-      <div className="container mx-auto px-4">
+    <section className="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-slate-800">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <HelpCircle size={16} />
+          <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4">
+            <HelpCircle size={14} className="sm:w-4 sm:h-4" />
             Frequently Asked Questions
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-outfit">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 font-outfit px-4 sm:px-0">
             Got{' '}
             <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
               Questions?
             </span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-outfit">
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-outfit px-4 sm:px-0">
             Find answers to common questions about PrepSphere AI and how it can transform your learning experience.
           </p>
         </motion.div>
@@ -100,15 +100,15 @@ const FAQSection = () => {
           className="max-w-4xl mx-auto"
         >
           {faqs.map((faq, index) => (
-            <motion.div key={index} variants={itemVariants} className="mb-4">
+            <motion.div key={index} variants={itemVariants} className="mb-3 sm:mb-4">
               <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
                 <CardContent className="p-0">
                   <motion.button
                     onClick={() => toggleFAQ(index)}
-                    className="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+                    className="w-full p-4 sm:p-6 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
                     whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.05)" }}
                   >
-                    <h3 className="text-lg font-normal text-gray-900 dark:text-white pr-4">
+                    <h3 className="text-base sm:text-lg font-normal text-gray-900 dark:text-white pr-3 sm:pr-4">
                       {faq.question}
                     </h3>
                     <motion.div
@@ -119,7 +119,7 @@ const FAQSection = () => {
                       {openIndex === index ? (
                         <Minus size={20} className="text-orange-600 dark:text-orange-400" />
                       ) : (
-                        <Plus size={20} className="text-orange-600 dark:text-orange-400" />
+                        <Plus size={18} className="sm:w-5 sm:h-5 text-orange-600 dark:text-orange-400" />
                       )}
                     </motion.div>
                   </motion.button>
@@ -133,13 +133,13 @@ const FAQSection = () => {
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="px-6 pb-6 pt-0 mt-2">
+                        <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-0 mt-2">
                           <motion.p
                             initial={{ y: -10, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             exit={{ y: -10, opacity: 0 }}
                             transition={{ duration: 0.2, delay: 0.1 }}
-                            className="text-gray-600 dark:text-gray-300 leading-relaxed"
+                            className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed"
                           >
                             {faq.answer}
                           </motion.p>

@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'PrepSphere AI' }],
   creator: 'PrepSphere AI',
   publisher: 'PrepSphere AI',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   formatDetection: {
     email: false,
     address: false,
@@ -85,6 +86,36 @@ export default function RootLayout({
             {children}
           </Provider>
           <Toaster/>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                if ('serviceWorker' in navigator && typeof window !== 'undefined') {
+                  window.addEventListener('load', function() {
+                    // Only register in production or when explicitly needed
+                    const isDev = window.location.hostname === 'localhost' || 
+                                 window.location.hostname === '127.0.0.1';
+                    
+                    if (!isDev) {
+                      navigator.serviceWorker.register('/sw.js')
+                        .then(function(registration) {
+                          console.log('SW registered successfully:', registration.scope);
+                          
+                          // Handle updates
+                          registration.addEventListener('updatefound', function() {
+                            console.log('SW update found');
+                          });
+                        })
+                        .catch(function(registrationError) {
+                          console.warn('SW registration failed:', registrationError);
+                        });
+                    } else {
+                      console.log('Development mode: Service Worker registration skipped');
+                    }
+                  });
+                }
+              `,
+            }}
+          />
         </body>
       </html>
     </ClerkProvider>

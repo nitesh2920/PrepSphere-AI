@@ -158,18 +158,35 @@ function ViewNotes() {
                 </Button>
             </div>
 
-            <div className='flex gap-5 items-center '>
-                {stepCount !== 0 && <Button variant="outline" size="sm" onClick={() => setStepCount((prev) => (prev || 0) - 1)}>Previous</Button>}
-                {notes?.map((_, index) => (
-                    <div key={index} className={`w-full h-2 rounded-full ${index <= stepCount ? 'bg-primary' : 'bg-gray-300'}`}>
+            <div className='flex gap-5 items-center justify-between'>
+                <div className='flex gap-5 items-center flex-1'>
+                    {stepCount !== 0 && <Button variant="outline" size="sm" onClick={() => setStepCount((prev) => (prev || 0) - 1)}>Previous</Button>}
+                    {notes?.map((_, index) => (
+                        <div key={index} className={`w-full h-2 rounded-full ${index <= stepCount ? 'bg-primary' : 'bg-gray-300'}`}>
+                        </div>
+                    ))}
+                    {stepCount < notes.length - 1 && <Button variant="outline" size="sm" onClick={() => {
+                        const nextStep = (stepCount || 0) + 1;
+                        setStepCount(nextStep);
+                        // Mark current chapter as completed when moving to next
+                        markChapterComplete(stepCount);
+                    }}>Next</Button>}
+                </div>
+                {/* PDF Export - Coming Soon */}
+                <div className="relative group">
+                    <button
+                        disabled
+                        className="flex items-center gap-2 px-4 py-2 border border-orange-300 text-orange-600 rounded-lg opacity-50 cursor-not-allowed"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Export PDF
+                    </button>
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                        Coming Soon
                     </div>
-                ))}
-                {stepCount < notes.length - 1 && <Button variant="outline" size="sm" onClick={() => {
-                    const nextStep = (stepCount || 0) + 1;
-                    setStepCount(nextStep);
-                    // Mark current chapter as completed when moving to next
-                    markChapterComplete(stepCount);
-                }}>Next</Button>}
+                </div>
             </div>
 
             <div >

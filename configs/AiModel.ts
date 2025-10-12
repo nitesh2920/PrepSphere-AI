@@ -182,3 +182,75 @@ export async function generateQuiz(prompt: string): Promise<string> {
     return '[]';
   }
 }
+
+export async function generateQA(prompt: string): Promise<string> {
+  console.log('Starting Q&A generation with prompt length:', prompt.length);
+  
+  const qaSchema: Schema = {
+    type: Type.ARRAY,
+    items: {
+      type: Type.OBJECT,
+      properties: {
+        question: { type: Type.STRING },
+        answer: { type: Type.STRING },
+        difficulty: { type: Type.STRING },
+        category: { type: Type.STRING },
+        tags: {
+          type: Type.ARRAY,
+          items: { type: Type.STRING },
+        },
+        followUpQuestions: {
+          type: Type.ARRAY,
+          items: { type: Type.STRING },
+        },
+      },
+      required: ['question', 'answer', 'difficulty', 'category'],
+    },
+  };
+
+  const config = {
+    responseMimeType: 'application/json',
+    responseSchema: qaSchema,
+    thinkingConfig: {
+      thinkingBudget: -1,
+    },
+  };
+
+  const contents = [
+    {
+      role: 'user',
+      parts: [{ text: prompt }],
+    },
+  ];
+
+  try {
+    console.log('Calling Gemini API for Q&A generation...');
+    const result = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents,
+      config,
+    });
+
+    const response = result.text ?? '';
+    console.log('Q&A generation completed. Response length:', response.length);
+    
+    if (!response || response.trim() === '') {
+      console.error('Empty response from Gemini API');
+      return '[]';
+    }
+    
+    // Validate JSON
+    try {
+      JSON.parse(response);
+      console.log('Q&A response is valid JSON');
+    } catch (parseError) {
+      console.error('Q&A response is not valid JSON:', parseError);
+      return '[]';
+    }
+    
+    return response;
+  } catch (err) {
+    console.error('Error generating Q&A:', err);
+    return '[]';
+  }
+}

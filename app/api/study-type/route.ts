@@ -22,8 +22,8 @@ export async function POST(req: NextRequest) {
     const result = {
       notes: notes,
       Flashcard: contentList?.filter(item => item.type == 'Flashcard'),
-      Quiz: contentList?.filter(item => item.type == 'quiz'),
-      QA: contentList?.filter(item => item.type == 'qa')
+      quiz: contentList?.filter(item => item.type == 'quiz'),
+      qa: contentList?.filter(item => item.type == 'qa')
 
     };
 
