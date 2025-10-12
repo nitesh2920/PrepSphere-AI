@@ -1,11 +1,15 @@
 {
-  "name": "PrepSphere AI",
+  "name": "PrepSphere AI - Smart Study Companion",
   "short_name": "PrepSphere",
-  "description": "PrepSphere AI : Exam and interview material generator",
+  "description": "PrepSphere: AI-powered study material generator for exams and interviews. Create personalized notes, flashcards, and quizzes.",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#ea580c",
+  "categories": ["education", "productivity", "utilities"],
+  "lang": "en",
+  "scope": "/",
   "icons": [
     {
       "src": "/favicon.ico",
@@ -22,6 +26,31 @@
       "src": "/apple-touch-icon.svg",
       "sizes": "180x180",
       "type": "image/svg+xml"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/logo-dark.svg",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "PrepSphere AI Dashboard"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create Course",
+      "short_name": "Create",
+      "description": "Generate new study material",
+      "url": "/create",
+      "icons": [{ "src": "/logo-dark.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View your courses",
+      "url": "/dashboard",
+      "icons": [{ "src": "/logo-dark.svg", "sizes": "96x96" }]
     }
   ]
 }

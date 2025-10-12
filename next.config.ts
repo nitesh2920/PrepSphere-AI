@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true, 
   },
-
+  // Enable standalone output for Docker
+  output: 'standalone',
 };
 
 export default nextConfig;
