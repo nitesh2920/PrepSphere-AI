@@ -6,11 +6,10 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Sparkles, BookOpen, Brain, Zap } from 'lucide-react'
 import Link from 'next/link'
 import { useUser } from '@clerk/nextjs'
-import { useScrollAnimation, fadeInUp, staggerContainer } from '@/app/_hooks/useScrollAnimation'
+
 
 const HeroSection = () => {
   const { isSignedIn } = useUser()
-  const { ref: heroRef, controls } = useScrollAnimation({ threshold: 0.2 })
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -121,60 +120,41 @@ const HeroSection = () => {
             </div>
           </motion.div>
 
-          {/* CTA Buttons */}
+          {/* CTA Button */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12 max-w-2xl mx-auto"
+            className="flex justify-center items-center mb-12"
           >
             {isSignedIn ? (
-              <Link href="/dashboard" className="w-full sm:w-auto">
+              <Link href="/dashboard">
                 <motion.div
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full"
                 >
                   <Button
                     size="lg"
-                    className="w-full sm:w-auto bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 px-12 py-5 text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit"
+                    className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white border-0 px-16 py-6 text-xl font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit min-w-[280px]"
                   >
                     Go to Dashboard
-                    <ArrowRight className="ml-2" size={20} />
+                    <ArrowRight className="ml-3" size={24} />
                   </Button>
                 </motion.div>
               </Link>
             ) : (
-              <>
-                <Link href="/sign-up" className="w-full sm:w-auto">
-                  <motion.div
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full"
+              <Link href="/sign-up">
+                <motion.div
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white border-0 px-16 py-6 text-xl font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit min-w-[280px]"
                   >
-                    <Button
-                      size="lg"
-                      className="w-full sm:w-auto bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 px-12 py-4 text-lg font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 font-outfit"
-                    >
-                      Get Started
-                      <ArrowRight className="ml-2" size={20} />
-                    </Button>
-                  </motion.div>
-                </Link>
-                <Link href="/sign-in" className="w-full sm:w-auto">
-                  <motion.div
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full"
-                  >
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="w-full sm:w-auto bg-transparent border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 px-12 py-4 text-lg font-semibold rounded-2xl transition-all duration-300 font-outfit"
-                    >
-                      Book Demo
-                    </Button>
-                  </motion.div>
-                </Link>
-              </>
+                    Get Started
+                    <ArrowRight className="ml-3" size={24} />
+                  </Button>
+                </motion.div>
+              </Link>
             )}
           </motion.div>
 
