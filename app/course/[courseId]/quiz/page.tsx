@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import axios from 'axios';
+import { useProgress } from '@/app/_context/ProgressContext';
 import QuizHeader from './_components/QuizHeader';
 import QuizProgress from './_components/QuizProgress';
 import QuizQuestion from './_components/QuizQuestion';
 import QuizNavigation from './_components/QuizNavigation';
 import QuizResults from './_components/QuizResults';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 
 interface QuizData {
   question: string;
@@ -23,8 +24,10 @@ interface QuizResponse {
 export default function QuizPage() {
   const { courseId } = useParams();
   const { user } = useUser();
+  const { triggerProgressRefresh } = useProgress();
   const [quizData, setQuizData] = useState<QuizResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isPolling, setIsPolling] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -38,6 +41,30 @@ export default function QuizPage() {
   useEffect(() => {
     fetchQuizData();
   }, [courseId, user]);
+
+  // Polling effect to check for data if initially empty
+  useEffect(() => {
+    if (!loading && !error && (!quizData?.content?.length)) {
+      setIsPolling(true);
+      const pollInterval = setInterval(async () => {
+        await fetchQuizData();
+      }, 3000); // Poll every 3 seconds
+
+      // Clear polling after 60 seconds to prevent infinite polling
+      const timeout = setTimeout(() => {
+        clearInterval(pollInterval);
+        setIsPolling(false);
+      }, 60000);
+
+      return () => {
+        clearInterval(pollInterval);
+        clearTimeout(timeout);
+        setIsPolling(false);
+      };
+    } else if (quizData?.content?.length) {
+      setIsPolling(false);
+    }
+  }, [loading, error, quizData?.content?.length]);
 
   useEffect(() => {
     if (quizData && !showResults && startTime) {
@@ -61,7 +88,7 @@ export default function QuizPage() {
         studyType: 'quiz',
       });
 
-      console.log('Quiz API Response:', result.data);
+
 
       if (result.data && result.data.content) {
         const parsedContent = typeof result.data.content === 'string'
@@ -74,10 +101,9 @@ export default function QuizPage() {
         setResults(new Array(parsedContent.length).fill(false));
         setStartTime(Date.now());
       } else {
-        setError('No quiz data available. Please generate quiz content first.');
+        setError('Quiz may still be generating. Please wait a moment or go back to generate it first.');
       }
     } catch (error) {
-      console.error('Error fetching quiz data:', error);
       setError('Failed to load quiz data. Please try again.');
     } finally {
       setLoading(false);
@@ -107,6 +133,30 @@ export default function QuizPage() {
     }
   };
 
+  const markQuizComplete = async () => {
+    if (user?.primaryEmailAddress?.emailAddress && courseId && quizData) {
+      try {
+        // Mark each quiz question as completed
+        for (let i = 0; i < quizData.content.length; i++) {
+          await fetch('/api/user-progress', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'mark_complete',
+              userId: user.primaryEmailAddress.emailAddress,
+              courseId: courseId,
+              materialType: 'quiz',
+              itemId: i.toString()
+            })
+          });
+        }
+      } catch (error) {
+        // Silently handle error
+      }
+    }
+    triggerProgressRefresh(); // Trigger progress refresh when quiz is completed
+  };
+
   const handleSubmit = () => {
     if (!quizData) return;
 
@@ -119,6 +169,9 @@ export default function QuizPage() {
     setResults(newResults);
     setCorrectAnswers(correct);
     setShowResults(true);
+    
+    // Mark quiz as completed
+    markQuizComplete();
   };
 
   const handleRestart = () => {
@@ -132,16 +185,16 @@ export default function QuizPage() {
     setStartTime(Date.now());
   };
 
-  if (loading) {
+  if (loading || isPolling) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="text-center">
           <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-foreground mb-2">
-            Loading Quiz
+            {isPolling ? 'Checking for Generated Content' : 'Loading Quiz'}
           </h2>
           <p className="text-muted-foreground">
-            Preparing your quiz questions...
+            {isPolling ? 'Quiz may still be generating. Please wait...' : 'Preparing your quiz questions...'}
           </p>
         </div>
       </div>
@@ -159,12 +212,15 @@ export default function QuizPage() {
           <p className="text-muted-foreground mb-4">
             {error}
           </p>
-          <button
-            onClick={fetchQuizData}
-            className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors"
-          >
-            Try Again
-          </button>
+          <div className="flex gap-2 justify-center">
+            <button
+              onClick={fetchQuizData}
+              className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors flex items-center gap-2"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Refresh
+            </button>
+          </div>
         </div>
       </div>
     );

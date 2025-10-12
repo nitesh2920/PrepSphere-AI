@@ -61,28 +61,20 @@ export default function StudyMaterialSection({ courseId, course }: StudyMaterial
 
   const GetStudyMaterial = async (refresh?: boolean) => {
     try {
-      console.log('📡 Fetching study material, refresh:', refresh)
-      
       const result = await axios.post('/api/study-type', {
         courseId: courseId,
         studyType: 'ALL'
       })
       
-      console.log("📊 API Response:", result?.data)
-      console.log("📊 Available keys:", Object.keys(result?.data || {}))
-      
       setStudyTypeContent(prevState => {
-        console.log("📝 Previous state:", prevState)
-        console.log("📝 New state:", result.data)
         return { ...result.data }
       })
 
       if (refresh) {
-        console.log("🔄 Incrementing refresh key")
         setRefreshKey(prev => prev + 1)
       }
     } catch (error) {
-      console.error("Error fetching study material:", error)
+      // Silently handle error
     }
   }
 

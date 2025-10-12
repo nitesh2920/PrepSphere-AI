@@ -132,7 +132,6 @@ export async function generateFlashcards(prompt: string): Promise<string> {
   });
 
   const response = result.text ?? '';
-  console.log("Flashcard AI Response:", response);
   return response;
 }
 
@@ -177,8 +176,6 @@ export async function generateQuiz(prompt: string): Promise<string> {
     });
 
     const response = result.text ?? '';
-    console.log('Quiz AI Response:', response);
-
     return response;
   } catch (err) {
     console.error('Error generating quiz:', err);

@@ -36,7 +36,7 @@ function SelectOptions({ selectedStudyType }: SelectOptionsProps) {
                     <div key={index} onClick={() => { setSelected(option.name); selectedStudyType(option.name) }
                     } className={`border p-4 
             rounded-lg  flex flex-col items-center justify-center m-2 cursor-pointer 
-            hover:shadow-lg hover:border ${option.name === selected ? 'border-blue-500 bg-blue-100' : ''}`}
+            hover:shadow-lg hover:border ${option.name === selected ? 'border-orange-500 bg-orange-100 dark:bg-orange-900/20' : ''}`}
                     >
                         <Image src={option.icon} alt={option.name} width={50} height={50} className="mb-2" />
                         <h2 className="text-sm font-semibold">{option.name}</h2>

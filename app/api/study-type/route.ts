@@ -44,7 +44,22 @@ export async function POST(req: NextRequest) {
         eq(STUDY_TYPE_CONTENT_TABLE?.courseId, courseId),
         eq(STUDY_TYPE_CONTENT_TABLE?.type, studyType)
       ))
-
-    return NextResponse.json(result[0] ? JSON.parse(JSON.stringify(result[0])) : null);
+    
+    if (result.length > 0) {
+      const data = result[0];
+      
+      // Ensure content is properly parsed if it's a string
+      if (data.content && typeof data.content === 'string') {
+        try {
+          data.content = JSON.parse(data.content);
+        } catch (e) {
+          // Keep as string if parsing fails
+        }
+      }
+      
+      return NextResponse.json(data);
+    } else {
+      return NextResponse.json({ content: null });
+    }
   }
 }

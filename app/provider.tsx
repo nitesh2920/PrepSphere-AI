@@ -5,6 +5,10 @@ import { db } from '@/configs/db';
 import { USER_TABLE } from '@/configs/schema';
 import {eq} from "drizzle-orm"
 import axios from "axios"
+import { ThemeProvider } from './_components/providers/ThemeProvider'
+import { GenerationProvider } from './_context/GenerationContext'
+import { ProgressProvider } from './_context/ProgressContext'
+import { CreditProvider } from './_context/CreditContext'
 
 type ProviderProps = {
   children: React.ReactNode;
@@ -20,29 +24,24 @@ user&&checkIsNewUser();
 
 
   const checkIsNewUser=async ()=>{
-    // const result=await db.select().from(USER_TABLE)
-    // .where(eq(USER_TABLE.email,user?.primaryEmailAddress?.emailAddress))
-    //   console.log(result);
-    //   if(result?.length == 0){
-    //    const userData = await db.insert(USER_TABLE).values({
-    //       name:user?.fullName,
-    //       email:user?.primaryEmailAddress?.emailAddress
-    //     }).returning({
-    //       id:USER_TABLE.id
-    //     })
-    //     console.log(userData)
-
-    //   }
-
     const resp = await axios.post('/api/create-user',{
       user:user
     })
-
-    console.log(resp.data)
   }
   return (
-    <div>
-      {children}
-    </div>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <GenerationProvider>
+        <ProgressProvider>
+          <CreditProvider>
+            {children}
+          </CreditProvider>
+        </ProgressProvider>
+      </GenerationProvider>
+    </ThemeProvider>
   );
 }
