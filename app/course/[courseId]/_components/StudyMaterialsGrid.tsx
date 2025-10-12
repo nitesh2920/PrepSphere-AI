@@ -4,15 +4,9 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  BookOpen, 
-  Brain, 
-  FileText, 
-  HelpCircle, 
+import {  
   ArrowRight,
   Sparkles,
-  Target,
-  Zap
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -32,10 +26,10 @@ export default function StudyMaterialsGrid({ courseId, course }: StudyMaterialsG
       icon: '/notes.png',
       path: '/notes',
       type: 'notes',
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
-      iconBg: 'bg-blue-100',
-      textColor: 'text-blue-700',
+      color: 'from-orange-500 to-orange-600',
+      bgColor: 'bg-orange-50 dark:bg-orange-900/20',
+      iconBg: 'bg-orange-100 dark:bg-orange-900/30',
+      textColor: 'text-orange-700 dark:text-orange-400',
       badgeText: 'Study Material'
     },
     {
@@ -44,10 +38,10 @@ export default function StudyMaterialsGrid({ courseId, course }: StudyMaterialsG
       icon: '/flashcard.png',
       path: '/flashcards',
       type: 'Flashcard',
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
-      iconBg: 'bg-purple-100',
-      textColor: 'text-purple-700',
+      color: 'from-orange-500 to-orange-600',
+      bgColor: 'bg-orange-50 dark:bg-orange-900/20',
+      iconBg: 'bg-orange-100 dark:bg-orange-900/30',
+      textColor: 'text-orange-700 dark:text-orange-400',
       badgeText: 'Interactive'
     },
     {

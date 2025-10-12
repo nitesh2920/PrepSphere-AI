@@ -88,8 +88,8 @@ export default function CourseHeader({ course }: CourseHeaderProps) {
                 </div>
 
                 <div className="flex items-center gap-3 p-3 sm:p-4 bg-muted/50 rounded-xl col-span-2 sm:col-span-1">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Users className="w-5 h-5 text-blue-600" />
+                  <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
+                    <Users className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                   </div>
                   <div>
                     <p className="text-sm font-medium text-foreground">Beginner</p>

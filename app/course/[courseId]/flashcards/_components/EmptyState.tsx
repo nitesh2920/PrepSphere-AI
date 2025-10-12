@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, RefreshCw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function EmptyState() {
@@ -19,11 +19,17 @@ export default function EmptyState() {
                 <BookOpen className="w-16 h-16 text-muted-foreground mx-auto" />
                 <h2 className="text-2xl font-bold text-foreground">No flashcards available</h2>
                 <p className="text-muted-foreground">
-                  Please check back later or contact support.
+                  Flashcards may still be generating. Please wait a moment or go back to generate them first.
                 </p>
-                <Button onClick={() => router.back()} variant="outline">
-                  Go Back
-                </Button>
+                <div className="flex gap-2 justify-center">
+                  <Button onClick={() => router.back()} variant="outline">
+                    Go Back
+                  </Button>
+                  <Button onClick={() => window.location.reload()} variant="default">
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Refresh
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>

@@ -1,5 +1,7 @@
 import React from 'react';
-import { Clock, Trophy, Target } from 'lucide-react';
+import { Clock, Trophy, Target, ArrowLeft } from 'lucide-react';
+import { useRouter, useParams } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 interface QuizHeaderProps {
   totalQuestions: number;
@@ -14,6 +16,9 @@ export default function QuizHeader({
   timeElapsed = 0, 
   score 
 }: QuizHeaderProps) {
+  const router = useRouter();
+  const { courseId } = useParams();
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -21,7 +26,21 @@ export default function QuizHeader({
   };
 
   return (
-    <div className="bg-background rounded-xl shadow-sm border border-border p-6 mb-6">
+    <div className="space-y-4 mb-6">
+      {/* Back Navigation */}
+      <div className="flex justify-start">
+        <Button 
+          variant="outline" 
+          onClick={() => router.push(`/course/${courseId}`)}
+          className="flex items-center gap-2"
+        >
+          <ArrowLeft size={16} />
+          Back to Course
+        </Button>
+      </div>
+
+      {/* Quiz Header */}
+      <div className="bg-background rounded-xl shadow-sm border border-border p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-2">
@@ -57,6 +76,7 @@ export default function QuizHeader({
           </p>
         </div>
       </div>
+    </div>
     </div>
   );
 }

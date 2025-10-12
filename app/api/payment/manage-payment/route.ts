@@ -22,14 +22,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.log("Creating Stripe Portal for:", customerId);
-
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customerId,
       return_url: process.env.HOST_URL || "http://localhost:3000",
     });
-
-    console.log("Portal Session Created:", portalSession.url);
 
     return NextResponse.json({ url: portalSession.url });
   } catch (err: any) {

@@ -7,6 +7,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { RefreshCw, ArrowRight, Sparkles } from 'lucide-react'
 import { toast } from 'sonner';
+import { useProgress } from '@/app/_context/ProgressContext';
+import { useCredits } from '@/app/_context/CreditContext';
+import { useRouter } from 'next/navigation';
 
 interface MaterialCardItemProps {
   item: any;
@@ -16,13 +19,10 @@ interface MaterialCardItemProps {
 }
 
 function MaterialCardItem({ item, studyTypeContent, refreshData, course }: MaterialCardItemProps) {
+  const { triggerProgressRefresh } = useProgress();
+  const { credits, useCredit, isMember, refreshCredits } = useCredits();
+  const router = useRouter();
   const [loading, setLoading] = useState(false)
-
-  // Debug for all items to see what's happening
-  console.log(`🔍 ${item.name} Debug:`)
-  console.log('studyTypeContent:', studyTypeContent)
-  console.log('Available keys:', Object.keys(studyTypeContent || {}))
-  console.log('Looking for:', item.type, item.name)
 
   // Check if content is ready - try multiple possible keys
   const contentData = studyTypeContent?.[item.type] ||
@@ -31,13 +31,20 @@ function MaterialCardItem({ item, studyTypeContent, refreshData, course }: Mater
     studyTypeContent?.[item.name.toLowerCase()]
 
   const isReady = Array.isArray(contentData) && contentData.length > 0
-console.log("areeeeee",studyTypeContent)
-  console.log('contentData:', contentData)
-  console.log('isReady:', isReady)
 
   const GenerateContent = async () => {
-    const loadingToast = toast.loading(`Generating ${item.name}...`, {
+    // Check if content is already ready
+    if (isReady) {
+      toast.info(`${item.name} already exists!`);
+      return;
+    }
+
+    // Note: No credit deduction here since credits are deducted when creating the course
+    // Individual study materials (notes, flashcards, quiz) are included in the original course credit
+
+    const loadingToast = toast(`Generating ${item.name}...`, {
       duration: Infinity,
+      icon: <RefreshCw className="w-4 h-4 animate-spin" />,
     })
 
     setLoading(true)
@@ -48,44 +55,58 @@ console.log("areeeeee",studyTypeContent)
       });
 
       // Step 1: Generate content via Inngest
-      // console.log('🚀 Step 1: Calling /api/study-type-content')
       await axios.post('/api/study-type-content', {
         courseId: course?.courseId,
         type: item.type,  // Use item.type (e.g., 'Flashcard') not item.name (e.g., 'Flashcards')
         chapters: chapters
       });
-      console.log('type', item.type)
 
-      // Step 2: Wait for Inngest to complete, then refresh multiple times
-      setTimeout(async () => {
+      // Step 2: Poll for completion instead of fixed timeouts
+      const pollForCompletion = async (attempts = 0, maxAttempts = 20) => {
         try {
-          console.log('🔄 Step 2: First refresh after generation')
-          refreshData(true)
+          // Check if content is ready
+          const checkResult = await axios.post('/api/study-type', {
+            courseId: course?.courseId,
+            studyType: item.type
+          });
 
-          // Try again after more time
-          setTimeout(() => {
-            console.log('🔄 Step 3: Second refresh after generation')
-            refreshData(true)
-          }, 2000)
+          const hasContent = checkResult.data &&
+            (Array.isArray(checkResult.data.content) ? checkResult.data.content.length > 0 : checkResult.data !== null);
 
-          // Final attempt
-          setTimeout(() => {
-            console.log('🔄 Step 4: Final refresh after generation')
-            refreshData(true)
-          }, 4000)
+          if (hasContent) {
+            refreshData(true);
+            refreshCredits(); // Refresh credits to show updated count
+            // Add a delay to ensure database is fully updated before refreshing progress
+            setTimeout(() => {
+              triggerProgressRefresh();
+            }, 2000);
+            toast.dismiss(loadingToast);
+            toast.success(`${item.name} ready to view!`);
+            return;
+          }
 
-          toast.dismiss(loadingToast)
-          toast.success(`${item.name} ready to view!`)
+          // If not ready and we haven't exceeded max attempts, try again
+          if (attempts < maxAttempts - 1) {
+            setTimeout(() => pollForCompletion(attempts + 1, maxAttempts), 2000);
+          } else {
+            toast.dismiss(loadingToast);
+            toast.error(`${item.name} is taking longer than expected. Please refresh the page in a moment.`);
+          }
         } catch (error) {
-          console.error('Error in post-generation steps:', error)
-          toast.dismiss(loadingToast)
-          toast.error('Generated but failed to refresh. Please reload the page.')
+          if (attempts < maxAttempts - 1) {
+            setTimeout(() => pollForCompletion(attempts + 1, maxAttempts), 2000);
+          } else {
+            toast.dismiss(loadingToast);
+            toast.error('Error checking generation status. Please refresh the page.');
+          }
         }
-      }, 5000)
+      };
+
+      // Start polling after a short delay
+      setTimeout(() => pollForCompletion(), 3000);
 
       setLoading(false)
     } catch (error) {
-      console.error('Error in generation:', error)
       toast.dismiss(loadingToast)
       setLoading(false)
       toast.error(`Error generating ${item.name}. Please try again.`)

@@ -32,7 +32,6 @@ export const CreateNewUser = inngest.createFunction(
           .select()
           .from(USER_TABLE)
           .where(eq(USER_TABLE.email, user?.primaryEmailAddress?.emailAddress));
-        console.log(result);
         if (result?.length == 0) {
           const userData = await db
             .insert(USER_TABLE)
@@ -43,7 +42,6 @@ export const CreateNewUser = inngest.createFunction(
             .returning({
               id: USER_TABLE.id
             });
-          console.log(userData);
         }
         return result;
       }
@@ -62,12 +60,25 @@ export const GenerateNotes = inngest.createFunction(
     const notesResult = await step.run("Generate Chapter Notes", async () => {
       const chapters = course?.courseLayout?.chapters;
       let index = 0;
-      console.log("andarn hai");
-
       for (const chapter of chapters) {
         const prompt =
-          "Generate detailed exam material for each chapter listed below. Include all topic points under each chapter. Format the response strictly in clean semantic HTML (do NOT include <html>, <head>, <body>, or <title> tags). Wrap each chapter in <div class='chapter'> with <h1> as the chapter number along with the title. Use proper structure with <p>, <h2>, <ul>, <li>, <code>, <pre>, <details>, <summary>, etc. The response must start with ```html and end with ``` and contain only HTML." +
-          JSON.stringify(chapter);
+          `Generate comprehensive study notes for the following chapter. Create detailed, well-structured content that covers all topics thoroughly.
+
+Chapter Information: ${JSON.stringify(chapter)}
+
+Requirements:
+1. Format as clean semantic HTML (NO <html>, <head>, <body>, or <title> tags)
+2. Start with <h1> containing "Chapter [number]: [title] [emoji]" format (e.g., "Chapter 1: Introduction to React ⚛️")
+3. Use proper HTML structure: <div class='chapter'>, <h2>, <h3>, <p>, <ul>, <li>, <code>, <pre>, <details>, <summary>
+4. Include comprehensive explanations for each topic listed in the chapter
+5. Add practical examples and code snippets where relevant
+6. Use emojis that are contextually relevant to the chapter content
+7. Make content detailed and educational for exam/study preparation
+8. Structure content with clear headings and subheadings
+9. Response must start with \`\`\`html and end with \`\`\`
+10. Include all topic points mentioned in the chapter with detailed explanations
+
+Generate detailed, educational content that helps students master the concepts for their studies.`;
         const result = await generateNotesAIModel(prompt);
         const aiResp = result;
         // console.log("AI Response:", aiResp);
@@ -78,8 +89,6 @@ export const GenerateNotes = inngest.createFunction(
         });
         index++;
       }
-
-      console.log("end hogya");
 
       return "Completed";
     });
@@ -97,6 +106,8 @@ export const GenerateNotes = inngest.createFunction(
         return "Course Status Updated to Ready";
       }
     );
+
+
   }
 );
 
@@ -116,7 +127,6 @@ export const GenerateStudyTypeContent = inngest.createFunction(
           studyType == 'Flashcard' ? await generateFlashcards(prompt) : await generateQuiz(prompt);
         const AIResult = JSON.parse(result);
         return AIResult;
-        console.log("AIResult", AIResult)
       }
     );
 

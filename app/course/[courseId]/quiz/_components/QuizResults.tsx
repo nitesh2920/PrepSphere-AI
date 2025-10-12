@@ -61,11 +61,11 @@ export default function QuizResults({
           Quiz Complete!
         </h2>
         
-        <div className="text-6xl font-bold mb-4 text-blue-600">
+        <div className="text-6xl font-bold mb-4 text-orange-600">
           {score}%
         </div>
         
-        <h3 className="text-xl font-semibold mb-2 text-blue-600">
+        <h3 className="text-xl font-semibold mb-2 text-orange-600">
           {performance.title}
         </h3>
         
@@ -96,7 +96,7 @@ export default function QuizResults({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6">
           <div className="flex items-center space-x-3">
-            <div className="p-3 bg-blue-600 rounded-lg">
+            <div className="p-3 bg-orange-600 rounded-lg">
               <Target className="h-6 w-6 text-white" />
             </div>
             <div>
@@ -122,7 +122,7 @@ export default function QuizResults({
 
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6">
           <div className="flex items-center space-x-3">
-            <div className="p-3 bg-purple-600 rounded-lg">
+            <div className="p-3 bg-orange-600 rounded-lg">
               <Clock className="h-6 w-6 text-white" />
             </div>
             <div>
@@ -138,7 +138,7 @@ export default function QuizResults({
       {/* Question Breakdown */}
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
-          <Trophy className="h-5 w-5 text-blue-600" />
+          <Trophy className="h-5 w-5 text-orange-600" />
           <span>Question Breakdown</span>
         </h3>
         

@@ -3,8 +3,6 @@ import Stripe from 'stripe'
 
 export async function POST(req: NextRequest) {
     const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-    console.log('Stripe key exists:', !!stripeSecretKey)
-
     if (!stripeSecretKey) {
         return NextResponse.json(
             { error: 'Stripe secret key is not configured' },

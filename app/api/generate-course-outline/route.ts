@@ -7,6 +7,8 @@ import { inngest } from "@/inngest/client";
 export async function POST(req:NextRequest) {
     const { courseId, topic, studyType, difficultyLevel, createdBy } = await req.json();
 
+    console.log('🔍 Generating course outline for:', createdBy, 'Topic:', topic);
+
     const PROMPT = 'Generate a study material for ' + topic + ' for' + studyType + ' and level of difficulty  will be ' + difficultyLevel + ' with sumery of course, List of Chapters along with summary and Emoji icon related for each chapter and the heading of each chapter should be in h1 tag, Topic list in each chapter in JSON format only. '
 
     const aiResp = await getCourseOutline(PROMPT)
@@ -17,22 +19,18 @@ export async function POST(req:NextRequest) {
         courseId: courseId,
         courseType: studyType,
         difficultyLevel: difficultyLevel,
-
         createdBy: createdBy,
         topic: topic,
         courseLayout: aiResult,
-
-    }).returning({ resp: STUDY_MATERIAL_TABLE })
-
-    console.log(dbResult)
+    }).returning()
 
     const result = await inngest.send({
         name:'course.generate',
         data:{
-            course:dbResult[0].resp
+            course:dbResult[0]
         }
-
     });
-    console.log("Inngest Result:", result);
+    
+    console.log('✅ Course outline generated and inngest triggered');
     return NextResponse.json({ result: dbResult[0] })
 }

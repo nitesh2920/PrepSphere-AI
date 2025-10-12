@@ -1,12 +1,34 @@
-import Image from "next/image";
-import {UserButton} from "@clerk/nextjs"
+import Navbar from './_components/landing/Navbar'
+import HeroSection from './_components/landing/HeroSection'
+import Features from '@/components/features-1'
+import ComparisonSection from './_components/landing/ComparisonSection'
+import PricingSection from './_components/landing/PricingSection'
+import FAQSection from './_components/landing/FAQSection'
+import CTASection from './_components/landing/CTASection'
+import Footer from './_components/landing/Footer'
+import LenisProvider from './_components/providers/LenisProvider'
 
 export default function Home() {
   return (
-    <div className="flex items-center  justify-center h-[100vh]">
-     <h1 className="text-4xl  font-bold">PrepSphere AI </h1>
-
-     <UserButton/>
-    </div>
-  );
+    <LenisProvider>
+      <div className="min-h-screen">
+        <Navbar />
+        <main>
+          <HeroSection />
+          <section id="features">
+            <Features />
+          </section>
+          <ComparisonSection />
+          <section id="pricing">
+            <PricingSection />
+          </section>
+          <section id="faq">
+            <FAQSection />
+          </section>
+          {/* <CTASection /> */}
+        </main>
+        <Footer />
+      </div>
+    </LenisProvider>
+  )
 }

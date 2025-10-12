@@ -31,10 +31,10 @@ export default function QuizReview({ quizData, userAnswers, results }: QuizRevie
             {/* Question Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center">
                   <span className="text-white font-bold text-sm">{questionIndex + 1}</span>
                 </div>
-                <span className="text-blue-600 font-medium">Question {questionIndex + 1}</span>
+                <span className="text-orange-600 font-medium">Question {questionIndex + 1}</span>
               </div>
               
               <div className="flex items-center space-x-2">
@@ -92,7 +92,7 @@ export default function QuizReview({ quizData, userAnswers, results }: QuizRevie
                           <XCircle className="h-4 w-4 text-red-600" />
                         )}
                         {isUserAnswer && (
-                          <span className="text-xs px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+                          <span className="text-xs px-2 py-1 rounded bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400">
                             Your Answer
                           </span>
                         )}
