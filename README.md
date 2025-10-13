@@ -179,14 +179,12 @@ We welcome contributions! Here's how you can help:
 
 
 
-## 📈 **Roadmap**
 
 ### **Upcoming Features**
 
 - [ ] **Advanced AI Models**: GPT-4 and Claude integration
 - [ ] **Collaboration**: Share courses with classmates
-- [ ] **Mobile App**: React Native companion app
-- [ ] **Offline Mode**: Full offline functionality 
+- [ ] **Mobile App**: React Native companion app 
 - [ ] **Analytics**: Detailed study analytics and insights
 - [ ] **Study Groups**: Collaborative study sessions
 ---
