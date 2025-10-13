@@ -135,7 +135,6 @@ export const GenerateStudyTypeContent = inngest.createFunction(
             throw new Error(`Unsupported study type: ${studyType}`);
           }
           
-          console.log(`AI generation completed for ${studyType}. Result length:`, result?.length);
           
           if (!result || result.trim() === '') {
             throw new Error(`Empty result from AI for study type: ${studyType}`);

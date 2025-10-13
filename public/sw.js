@@ -12,11 +12,9 @@ const isDevelopment = self.location.hostname === 'localhost' ||
                      self.location.hostname === '127.0.0.1' ||
                      self.location.hostname.includes('vercel.app');
 
-// Install event
 self.addEventListener('install', (event) => {
   console.log('Service Worker installing...');
   
-  // Skip caching in development to avoid issues
   if (isDevelopment) {
     console.log('Development mode detected, skipping cache installation');
     self.skipWaiting();
