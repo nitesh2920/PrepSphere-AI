@@ -75,8 +75,6 @@ Requirements:
 6. Use emojis that are contextually relevant to the chapter content
 7. Make content detailed and educational for exam/study preparation
 8. Structure content with clear headings and subheadings
-9. Response must start with \`\`\`html and end with \`\`\`
-10. Include all topic points mentioned in the chapter with detailed explanations
 
 Generate detailed, educational content that helps students master the concepts for their studies.`;
         const result = await generateNotesAIModel(prompt);
