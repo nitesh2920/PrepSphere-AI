@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
 
-    console.log('🔍 Deducting credit for user:', userEmail);
 
     // Get user credits
     const user = await db
@@ -30,10 +29,8 @@ export async function POST(req: NextRequest) {
     }
 
     const currentCredits = user[0].credits || 0;
-    console.log('📊 Current credits for user:', userEmail, 'Credits:', currentCredits);
 
     if (currentCredits <= 0) {
-      console.log('❌ Insufficient credits for user:', userEmail);
       return NextResponse.json({ 
         error: "Insufficient credits. Please upgrade your plan.",
         needsUpgrade: true 
@@ -47,7 +44,6 @@ export async function POST(req: NextRequest) {
       .set({ credits: newCredits })
       .where(eq(USER_TABLE.email, userEmail));
 
-    console.log('✅ Credit deducted successfully. New credits:', newCredits);
 
     return NextResponse.json({ 
       success: true,

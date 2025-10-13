@@ -19,11 +19,9 @@ export async function POST(req: NextRequest) {
         .where(eq(USER_TABLE.email, userEmail));
 
       if (user.length === 0) {
-        console.log('❌ User not found in get_credits:', userEmail);
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
 
-      console.log('📊 Getting credits for user:', userEmail, 'Credits:', user[0].credits);
       return NextResponse.json({
         credits: user[0].credits || 0,
         isMember: user[0].isMember || false
@@ -93,7 +91,6 @@ export async function POST(req: NextRequest) {
       const currentUser = user[0];
       const currentCredits = currentUser.credits || 0;
       
-      console.log('🔄 Sync request for user:', userEmail, 'Current credits:', currentCredits, 'Is member:', currentUser.isMember);
       
       // Only sync if user is a member and has 0 or negative credits (indicating an issue)
       // Don't sync for normal credit usage (1-49 credits)
@@ -103,7 +100,6 @@ export async function POST(req: NextRequest) {
           .set({ credits: 50 })
           .where(eq(USER_TABLE.email, userEmail));
 
-        console.log('✅ Credits synced to 50 for Pro member with 0 credits');
         return NextResponse.json({ 
           success: true, 
           message: "Credits synced to 50 for Pro member",
@@ -111,7 +107,6 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      console.log('ℹ️ No sync needed - credits are within normal range');
       return NextResponse.json({ 
         success: true, 
         message: "Credits already correct",

@@ -90,7 +90,6 @@ export async function generateNotesAIModel(prompt: string): Promise<string> {
   });
 
     const result = response.text ?? '';
-    // console.log("AI Response:", result);
 
   return result;
 
@@ -184,7 +183,6 @@ export async function generateQuiz(prompt: string): Promise<string> {
 }
 
 export async function generateQA(prompt: string): Promise<string> {
-  console.log('Starting Q&A generation with prompt length:', prompt.length);
   
   const qaSchema: Schema = {
     type: Type.ARRAY,
@@ -224,7 +222,6 @@ export async function generateQA(prompt: string): Promise<string> {
   ];
 
   try {
-    console.log('Calling Gemini API for Q&A generation...');
     const result = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents,
@@ -232,7 +229,6 @@ export async function generateQA(prompt: string): Promise<string> {
     });
 
     const response = result.text ?? '';
-    console.log('Q&A generation completed. Response length:', response.length);
     
     if (!response || response.trim() === '') {
       console.error('Empty response from Gemini API');
@@ -242,7 +238,6 @@ export async function generateQA(prompt: string): Promise<string> {
     // Validate JSON
     try {
       JSON.parse(response);
-      console.log('Q&A response is valid JSON');
     } catch (parseError) {
       console.error('Q&A response is not valid JSON:', parseError);
       return '[]';

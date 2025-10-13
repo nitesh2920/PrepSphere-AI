@@ -62,7 +62,6 @@ const CreatePage = () => {
     
     try {
       // Step 1: Deduct credit first
-      console.log('🔍 Step 1: Deducting credit for user:', user?.primaryEmailAddress?.emailAddress);
       const creditResponse = await axios.post('/api/deduct-credit', {
         userEmail: user?.primaryEmailAddress?.emailAddress
       });
