@@ -1,0 +1,9 @@
+# CODEOWNERS file
+
+# Nitesh owns all files in the repository
+* @nitesh2920
+
+
+# If you want to restrict other users from contributing to specific parts:
+# Only Nitesh can push to the 'dev' branch
+/dev/ @nitesh2920
