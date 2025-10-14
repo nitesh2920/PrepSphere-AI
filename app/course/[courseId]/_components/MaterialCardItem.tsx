@@ -31,6 +31,11 @@ function MaterialCardItem({ item, studyTypeContent, refreshData, course }: Mater
     studyTypeContent?.[item.name.toLowerCase()]
 
   const isReady = Array.isArray(contentData) && contentData.length > 0
+  
+  // Check if content is currently being generated
+  const isGenerating = studyTypeContent?.[`${item.type}_status`] === 'Generating' ||
+    studyTypeContent?.[`${item.type.toLowerCase()}_status`] === 'Generating' ||
+    loading
 
   const GenerateContent = async () => {
     // Check if content is already ready
@@ -114,7 +119,8 @@ function MaterialCardItem({ item, studyTypeContent, refreshData, course }: Mater
   }
 
   const CardWrapper = ({ children }: { children: React.ReactNode }) => {
-    if (isReady) {
+    // Only make it clickable if content is ready (not generating or needs generation)
+    if (isReady && !isGenerating) {
       return (
         <Link href={'/course/' + course?.courseId + item.path}>
           {children}
@@ -126,13 +132,20 @@ function MaterialCardItem({ item, studyTypeContent, refreshData, course }: Mater
 
   return (
     <CardWrapper>
-      <Card className={`group cursor-pointer hover:shadow-xl transition-all duration-300 h-full
-        ${!isReady ? 'grayscale opacity-60 hover:opacity-80' : 'hover:scale-[1.02]'} 
+      <Card className={`group transition-all duration-300 h-full
+        ${isGenerating ? 'cursor-wait opacity-75' : 
+          !isReady ? 'cursor-pointer grayscale opacity-60 hover:opacity-80 hover:shadow-lg' : 
+          'cursor-pointer hover:scale-[1.02] hover:shadow-xl'} 
       `}>
         <CardContent className="p-6 flex flex-col h-full">
           {/* Status Badge */}
           <div className="flex justify-center mb-4">
-            {!isReady ? (
+            {isGenerating ? (
+              <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+                <RefreshCw className="w-3 h-3 mr-1 animate-spin" />
+                Generating
+              </Badge>
+            ) : !isReady ? (
               <Badge variant="secondary" className="bg-muted text-muted-foreground">
                 <Sparkles className="w-3 h-3 mr-1" />
                 Generate
@@ -169,7 +182,16 @@ function MaterialCardItem({ item, studyTypeContent, refreshData, course }: Mater
 
           {/* Action Button */}
           <div className="mt-6">
-            {!isReady ? (
+            {isGenerating ? (
+              <Button
+                className="w-full"
+                disabled={true}
+                variant="secondary"
+              >
+                <RefreshCw className="animate-spin w-4 h-4 mr-2" />
+                Generating...
+              </Button>
+            ) : !isReady ? (
               <Button
                 className="w-full"
                 onClick={(e) => {
