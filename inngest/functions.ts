@@ -55,21 +55,15 @@ export const GenerateNotes = inngest.createFunction(
   { event: "course.generate" },
   async ({ event, step }) => {
     const { course } = event.data;
-    console.log("Course data received:", course);
+    console.log("courser all data",course);
 
-    try {
-      const notesResult = await step.run("Generate Chapter Notes", async () => {
-        const chapters = course?.courseLayout?.chapters;
-        console.log("Chapters:", chapters);
-
-        if (!chapters || chapters.length === 0) {
-          throw new Error("No chapters found in course layout");
-        }
-
-        let index = 0;
-        for (const chapter of chapters) {
-          const prompt =
-            `Generate comprehensive study notes for the following chapter. Create detailed, well-structured content that covers all topics thoroughly.
+    const notesResult = await step.run("Generate Chapter Notes", async () => {
+      const chapters = course?.courseLayout?.chapters;
+      console.log("coursesss",course)
+      let index = 0;
+      for (const chapter of chapters) {
+        const prompt =
+          `Generate comprehensive study notes for the following chapter. Create detailed, well-structured content that covers all topics thoroughly.
 
 Chapter Information: ${JSON.stringify(chapter)}
 
@@ -77,57 +71,44 @@ Requirements:
 1. Format as clean semantic HTML (NO <html>, <head>, <body>, or <title> tags)
 2. Start with <h1> containing "Chapter [number]: [title] [emoji]" format (e.g., "Chapter 1: Introduction to React ⚛️")
 3. Use proper HTML structure: <div class='chapter'>, <h2>, <h3>, <p>, <ul>, <li>, <code>, <pre>, <details>, <summary>
-4. Include explanations for each topic listed in the chapter according to the difficulty chosen.
+4. Include explanations for each topic listed in the chapter according to the diffculty choosed.
 5. Add practical examples and code snippets where relevant
 6. Use emojis that are contextually relevant to the chapter content
 8. Structure content with clear headings and subheadings
 
 Generate detailed, educational content that helps students master the concepts for their studies.`;
-          
-          try {
-            const result = await generateNotesAIModel(prompt);
-            const aiResp = result;
-            console.log("AI Response for chapter", index, ":", aiResp);
+        const result = await generateNotesAIModel(prompt);
+        const aiResp = result;
+        // console.log("AI Response:", aiResp);
+        await db.insert(CHAPTER_NOTES_TABLE).values({
+          courseId: course?.courseId,
+          chapterId: index,
+          notes: aiResp
+        });
+        index++;
+      }
 
-            // Insert AI response into database
-            await db.insert(CHAPTER_NOTES_TABLE).values({
-              courseId: course?.courseId,
-              chapterId: index,
-              notes: aiResp
-            });
-            console.log(`Chapter ${index} notes saved.`);
-            index++;
-          } catch (aiError) {
-            console.error(`Failed to generate notes for chapter ${index}:`, aiError);
-            throw new Error(`Error generating notes for chapter ${index}: ${aiError.message}`);
-          }
-        }
+      return "Completed";
+    });
 
-        return "Chapter notes generation completed.";
-      });
+    const updateCourseStatus = await step.run(
+      "Update Course Status",
+      async () => {
+        const result = await db
+          .update(STUDY_MATERIAL_TABLE)
+          .set({
+            status: "Ready"
+          })
+          .where(eq(STUDY_MATERIAL_TABLE.courseId, course?.courseId));
 
-      // Updating course status after note generation is complete
-      const updateCourseStatus = await step.run("Update Course Status", async () => {
-        try {
-          const result = await db
-            .update(STUDY_MATERIAL_TABLE)
-            .set({ status: "Ready" })
-            .where(eq(STUDY_MATERIAL_TABLE.courseId, course?.courseId));
+        return "Course Status Updated to Ready";
+      }
+    );
 
-          console.log("Course status updated to 'Ready'.");
-          return "Course Status Updated to Ready";
-        } catch (updateError) {
-          console.error("Failed to update course status:", updateError);
-          throw new Error("Error updating course status: " + updateError.message);
-        }
-      });
 
-    } catch (error) {
-      console.error("Error in GenerateNotes function:", error);
-      return `Failed to generate notes for course ${course?.courseId}: ${error.message}`;
-    }
   }
 );
+
 // Used to generate Flashcard, Quiz, Question Answer
 export const GenerateStudyTypeContent = inngest.createFunction(
   
