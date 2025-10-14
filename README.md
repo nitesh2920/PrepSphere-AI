@@ -1,4 +1,4 @@
-# 🧡 PrepSphere AI - Smart Study Companion
+# 🧡 PrepSphere AI - Smart Study Companions
 
 <div align="center">
   <img src="public/logo-dark.svg" alt="PrepSphere AI Logo" width="120" height="120">
