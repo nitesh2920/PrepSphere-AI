@@ -38,6 +38,16 @@ function CourseList() {
   const [updatingCourses, setUpdatingCourses] = useState<Set<string>>(new Set())
   const [selectedFilter, setSelectedFilter] = useState('All')
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(12)
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedCourses = filteredCourses.slice(startIndex, endIndex)
+
   useEffect(() => {
     user && GetCourseList(); // Always check status regardless of manual/auto
   }, [user])
@@ -327,13 +337,40 @@ function CourseList() {
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
             {courseList.length > 0
-              ? `${filteredCourses.length} of ${courseList.length} Study Material${courseList.length !== 1 ? 's' : ''} ${searchQuery || selectedFilter !== 'All' ? 'found' : 'available'}`
+              ? totalPages > 1
+                ? `${paginatedCourses.length} of ${courseList.length} Study Material${courseList.length !== 1 ? 's' : ''} ${searchQuery || selectedFilter !== 'All' ? 'found' : 'available'}`
+                : `${filteredCourses.length} of ${courseList.length} Study Material${courseList.length !== 1 ? 's' : ''} ${searchQuery || selectedFilter !== 'All' ? 'found' : 'available'}`
               : 'Ready to start learning?'
             }
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          {/* Items per page dropdown */}
+          {filteredCourses.length > 6 && (
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2"
+            >
+              <span className="text-sm text-gray-600 dark:text-gray-400 hidden sm:inline">Show:</span>
+              <select
+                value={itemsPerPage}
+                onChange={(e) => {
+                  setItemsPerPage(Number(e.target.value));
+                  setCurrentPage(1); // Reset to first page
+                }}
+                className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              >
+                <option value={6}>6</option>
+                <option value={12}>12</option>
+                <option value={24}>24</option>
+                <option value={48}>48</option>
+                <option value={filteredCourses.length}>All</option>
+              </select>
+            </motion.div>
+          )}
+
           {/* Search Button */}
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -357,7 +394,10 @@ function CourseList() {
           >
             <select
               value={selectedFilter}
-              onChange={(e) => setSelectedFilter(e.target.value)}
+              onChange={(e) => {
+                setSelectedFilter(e.target.value);
+                setCurrentPage(1); // Reset to first page when filtering
+              }}
               className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             >
               <option value="All">All Types</option>
@@ -400,13 +440,19 @@ function CourseList() {
                 type="text"
                 placeholder="Search courses, topics, or types..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1); // Reset to first page when searching
+                }}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 autoFocus
               />
               {searchQuery && (
                 <button
-                  onClick={() => setSearchQuery('')}
+                  onClick={() => {
+                    setSearchQuery('');
+                    setCurrentPage(1); // Reset to first page when clearing search
+                  }}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 >
                   ✕
@@ -434,7 +480,7 @@ function CourseList() {
             ))
           ) : filteredCourses.length > 0 ? (
             // Course cards
-            filteredCourses.map((course, index) => (
+            paginatedCourses.map((course, index) => (
               <CourseCardItem
                 course={course}
                 key={course.courseId}
@@ -448,6 +494,94 @@ function CourseList() {
           )}
         </motion.div>
       </AnimatePresence>
+
+      {/* Pagination Controls */}
+      {filteredCourses.length > 0 && totalPages > 1 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700"
+        >
+          {/* Pagination Info */}
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Showing {startIndex + 1} to {Math.min(endIndex, filteredCourses.length)} of {filteredCourses.length} study materials
+          </div>
+
+          {/* Pagination Buttons */}
+          <div className="flex items-center gap-2">
+            {/* Previous Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="flex items-center gap-1"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              <span className="hidden sm:inline">Previous</span>
+            </Button>
+
+            {/* Page Numbers */}
+            <div className="flex items-center gap-1">
+              {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
+
+                return (
+                  <Button
+                    key={pageNum}
+                    variant={currentPage === pageNum ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setCurrentPage(pageNum)}
+                    className="w-8 h-8 p-0"
+                  >
+                    {pageNum}
+                  </Button>
+                );
+              })}
+
+              {totalPages > 5 && currentPage < totalPages - 2 && (
+                <>
+                  <span className="px-2 text-gray-400">...</span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(totalPages)}
+                    className="w-8 h-8 p-0"
+                  >
+                    {totalPages}
+                  </Button>
+                </>
+              )}
+            </div>
+
+            {/* Next Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="flex items-center gap-1"
+            >
+              <span className="hidden sm:inline">Next</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Button>
+          </div>
+        </motion.div>
+      )}
     </motion.div>
   )
 }
