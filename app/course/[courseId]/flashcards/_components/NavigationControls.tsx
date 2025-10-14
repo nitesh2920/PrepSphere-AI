@@ -25,40 +25,42 @@ export default function NavigationControls({
   const isLastCard = currentIndex === totalCards - 1;
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="w-full max-w-lg mx-auto px-2 sm:px-0">
       <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between gap-4">
+        <CardContent className="p-3 sm:p-4 md:p-6">
+          <div className="flex items-center justify-between gap-2 sm:gap-3 md:gap-4">
             <Button
               onClick={onPrevious}
               disabled={currentIndex === 0}
               variant="outline"
-              size="lg"
-              className="flex-1 h-12"
+              size="sm"
+              className="flex-1 h-10 sm:h-11 md:h-12 text-xs sm:text-sm"
             >
-              <ChevronLeft className="w-5 h-5 mr-2" />
-              Previous
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+              <span className="hidden xs:inline">Previous</span>
+              <span className="xs:hidden">Prev</span>
             </Button>
 
             <Button
               onClick={onReset}
               variant="ghost"
-              size="lg"
-              className="h-12 px-4"
+              size="sm"
+              className="h-10 sm:h-11 md:h-12 px-2 sm:px-3 md:px-4 flex-shrink-0"
               title="Reset to first card"
             >
-              <RotateCcw className="w-5 h-5" />
+              <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
 
             <Button
               onClick={onNext}
               disabled={isLastCard}
               variant="outline"
-              size="lg"
-              className="flex-1 h-12"
+              size="sm"
+              className="flex-1 h-10 sm:h-11 md:h-12 text-xs sm:text-sm"
             >
-              Next
-              <ChevronRight className="w-5 h-5 ml-2" />
+              <span className="hidden xs:inline">Next</span>
+              <span className="xs:hidden">Next</span>
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" />
             </Button>
           </div>
 

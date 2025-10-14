@@ -48,21 +48,45 @@ export default function ProgressNavigation({
           />
         </div>
 
-        {/* Progress Dots */}
-        <div className="flex gap-1.5 sm:gap-2 justify-center flex-wrap max-w-full overflow-hidden">
-          {Array.from({ length: totalCards }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => onCardSelect(index)}
-              className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-200 flex-shrink-0 ${
-                index === currentIndex
-                  ? 'bg-primary scale-125'
-                  : index < currentIndex
-                    ? 'bg-green-500'
-                    : 'bg-muted hover:bg-muted-foreground/20'
-              }`}
-            />
-          ))}
+        {/* Progress Dots - Responsive with scrolling for many cards */}
+        <div className="relative">
+          {totalCards <= 20 ? (
+            // Show all dots if 20 or fewer cards
+            <div className="flex gap-1 sm:gap-1.5 justify-center flex-wrap max-w-full">
+              {Array.from({ length: totalCards }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => onCardSelect(index)}
+                  className={`w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-200 flex-shrink-0 ${
+                    index === currentIndex
+                      ? 'bg-primary scale-125'
+                      : index < currentIndex
+                        ? 'bg-green-500'
+                        : 'bg-muted hover:bg-muted-foreground/20'
+                  }`}
+                />
+              ))}
+            </div>
+          ) : (
+            // Scrollable dots for many cards
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+              <div className="flex gap-1 sm:gap-1.5 justify-start min-w-max px-4">
+                {Array.from({ length: totalCards }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => onCardSelect(index)}
+                    className={`w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-200 flex-shrink-0 ${
+                      index === currentIndex
+                        ? 'bg-primary scale-125'
+                        : index < currentIndex
+                          ? 'bg-green-500'
+                          : 'bg-muted hover:bg-muted-foreground/20'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -170,15 +170,15 @@ function Flashcards() {
 
     return (
         <div className="min-h-screen bg-background">
-            <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 max-w-6xl">
+            <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-4 md:py-6 max-w-7xl">
                 <div className="flex flex-col min-h-screen">
                     {/* Header Section */}
-                    <div className="mb-4 sm:mb-6">
+                    <div className="mb-3 sm:mb-4 md:mb-6">
                         <FlashcardHeader />
                     </div>
 
                     {/* Progress Section */}
-                    <div className="mb-6 sm:mb-8">
+                    <div className="mb-4 sm:mb-6 md:mb-8">
                         <ProgressNavigation
                             currentIndex={currentIndex}
                             totalCards={totalCards}
@@ -187,7 +187,7 @@ function Flashcards() {
                     </div>
 
                     {/* Flashcard Section - Responsive centered layout */}
-                    <div className="flex-1 flex items-center justify-center min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] mb-6 sm:mb-8">
+                    <div className="flex-1 flex items-center justify-center min-h-[300px] sm:min-h-[400px] md:min-h-[450px] lg:min-h-[500px] mb-4 sm:mb-6 md:mb-8 px-2">
                         <FlashCardItem
                             flashcard={flashCards.content[currentIndex]}
                             isFlipped={isFlipped}
@@ -196,7 +196,7 @@ function Flashcards() {
                     </div>
 
                     {/* Navigation Section */}
-                    <div className="mt-auto pb-4 sm:pb-6">
+                    <div className="mt-auto pb-2 sm:pb-4 md:pb-6">
                         <NavigationControls
                             currentIndex={currentIndex}
                             totalCards={totalCards}
