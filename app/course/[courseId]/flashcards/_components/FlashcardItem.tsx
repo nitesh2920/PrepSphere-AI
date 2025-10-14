@@ -22,18 +22,18 @@ function FlashCardItem({ flashcard, isFlipped, setIsFlipped }: FlashCardItemProp
   };
 
   return (
-    <div className="flex items-center justify-center w-full py-4 sm:py-8">
-      <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
+    <div className="flex items-center justify-center w-full py-4 sm:py-8 px-4 sm:px-6">
+      <div className="relative w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
         <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
           {/* Front Card */}
           <Card
             onClick={handleClick}
-            className="group relative p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-primary via-primary/90 to-primary/80 
-                       text-primary-foreground rounded-2xl sm:rounded-3xl flex items-center justify-center cursor-pointer 
+            className="group relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 
+                       text-primary-foreground rounded-2xl sm:rounded-3xl cursor-pointer 
                        shadow-xl hover:shadow-2xl sm:shadow-2xl sm:hover:shadow-3xl transition-all duration-500 
-                       h-[280px] w-full sm:h-[320px] lg:h-[400px] aspect-[4/5] sm:aspect-auto
-                       border-0 hover:scale-[1.02] sm:hover:scale-105 transform-gpu overflow-hidden
-                       backdrop-blur-sm"
+                       h-[320px] w-full sm:h-[380px] md:h-[420px] lg:h-[480px] xl:h-[520px] aspect-[4/5] sm:aspect-auto
+                       border-0 hover:scale-[1.02] sm:hover:scale-105 transform-gpu
+                       backdrop-blur-sm flex flex-col"
           >
             {/* Premium Background Effects */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/10 rounded-3xl" />
@@ -44,15 +44,26 @@ function FlashCardItem({ flashcard, isFlipped, setIsFlipped }: FlashCardItemProp
               <Sparkles className="absolute top-4 left-4 sm:top-8 sm:left-8 w-4 h-4 sm:w-6 sm:h-6 text-white/30 animate-pulse" />
             </div>
 
-            {/* Content */}
-            <div className="relative z-10 text-center space-y-3 sm:space-y-6 max-w-full px-2 sm:px-4">
-              <div className="w-12 h-12 sm:w-16 lg:w-20 sm:h-16 lg:h-20 mx-auto bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-3 sm:mb-6 shadow-lg">
-                <HelpCircle className="w-6 h-6 sm:w-8 lg:w-10 sm:h-8 lg:h-10 text-white" />
+            {/* Content - Scrollable */}
+            <div className="relative z-10 flex-1 flex flex-col p-4 sm:p-6 lg:p-8 min-h-0">
+              {/* Header Icon */}
+              <div className="flex-shrink-0 text-center mb-3 sm:mb-4">
+                <div className="w-12 h-12 sm:w-16 lg:w-20 sm:h-16 lg:h-20 mx-auto bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
+                  <HelpCircle className="w-6 h-6 sm:w-8 lg:w-10 sm:h-8 lg:h-10 text-white" />
+                </div>
               </div>
-              <h2 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold leading-relaxed break-words text-white px-2">
-                {flashcard?.front}
-              </h2>
-              <div className="pt-3 sm:pt-6">
+
+              {/* Scrollable Content Area */}
+              <div className="flex-1 flex justify-content items-center overflow-y-auto overflow-x-hidden min-h-0 px-2 sm:px-4 scrollbar-thin scrollbar-thumb-white/30 scrollbar-track-transparent hover:scrollbar-thumb-white/50">
+                <div className="text-center space-y-4 pb-6 px-2">
+                  <h2 className="flashcard-content text-base sm:text-lg lg:text-xl xl:text-2xl font-medium leading-relaxed break-words text-white hyphens-auto">
+                    {flashcard?.front}
+                  </h2>
+                </div>
+              </div>
+
+              {/* Footer - Fixed at bottom */}
+              <div className="flex-shrink-0 text-center pt-3 sm:pt-4">
                 <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-6 py-2 sm:py-3 bg-white/20 backdrop-blur-sm rounded-full text-xs sm:text-sm font-medium border border-white/30">
                   <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse" />
                   <span className="hidden sm:inline">Click to reveal answer</span>
@@ -69,12 +80,12 @@ function FlashCardItem({ flashcard, isFlipped, setIsFlipped }: FlashCardItemProp
           {/* Back Card */}
           <Card
             onClick={handleClick}
-            className="group relative p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-card via-card/95 to-muted/50 
-                       text-card-foreground rounded-2xl sm:rounded-3xl flex items-center justify-center cursor-pointer 
+            className="group relative bg-gradient-to-br from-card via-card/95 to-muted/50 
+                       text-card-foreground rounded-2xl sm:rounded-3xl cursor-pointer 
                        shadow-xl hover:shadow-2xl sm:shadow-2xl sm:hover:shadow-3xl transition-all duration-500 
-                       h-[280px] w-full sm:h-[320px] lg:h-[400px] aspect-[4/5] sm:aspect-auto
-                       border-2 border-green-200/50 hover:scale-[1.02] sm:hover:scale-105 transform-gpu overflow-hidden
-                       backdrop-blur-sm"
+                       h-[320px] w-full sm:h-[380px] md:h-[420px] lg:h-[480px] xl:h-[520px] aspect-[4/5] sm:aspect-auto
+                       border-2 border-green-200/50 hover:scale-[1.02] sm:hover:scale-105 transform-gpu
+                       backdrop-blur-sm flex flex-col"
           >
             {/* Premium Background Effects */}
             <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 via-transparent to-emerald-50/30 rounded-2xl sm:rounded-3xl" />
@@ -85,15 +96,26 @@ function FlashCardItem({ flashcard, isFlipped, setIsFlipped }: FlashCardItemProp
               <Target className="absolute top-4 right-4 sm:top-8 sm:right-8 w-4 h-4 sm:w-6 sm:h-6 text-green-400/60 animate-pulse" />
             </div>
 
-            {/* Content */}
-            <div className="relative z-10 text-center space-y-3 sm:space-y-6 max-w-full px-2 sm:px-4">
-              <div className="w-12 h-12 sm:w-16 lg:w-20 sm:h-16 lg:h-20 mx-auto bg-green-100 backdrop-blur-sm rounded-full flex items-center justify-center mb-3 sm:mb-6 shadow-lg border border-green-200">
-                <CheckCircle2 className="w-6 h-6 sm:w-8 lg:w-10 sm:h-8 lg:h-10 text-green-600" />
+            {/* Content - Scrollable */}
+            <div className="relative z-10 flex-1 flex flex-col p-4 sm:p-6 lg:p-8 min-h-0">
+              {/* Header Icon */}
+              <div className="flex-shrink-0 text-center mb-3 sm:mb-4">
+                <div className="w-12 h-12 sm:w-16 lg:w-20 sm:h-16 lg:h-20 mx-auto bg-green-100 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-green-200">
+                  <CheckCircle2 className="w-6 h-6 sm:w-8 lg:w-10 sm:h-8 lg:h-10 text-green-600" />
+                </div>
               </div>
-              <h2 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold leading-relaxed text-foreground break-words px-2">
-                {flashcard?.back}
-              </h2>
-              <div className="pt-3 sm:pt-6">
+
+              {/* Scrollable Content Area */}
+              <div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0 px-2 sm:px-4 scrollbar-thin scrollbar-thumb-green-400/50 scrollbar-track-transparent hover:scrollbar-thumb-green-500/70">
+                <div className="text-center space-y-4 pb-6 px-2">
+                  <h2 className="flashcard-content text-base sm:text-lg lg:text-xl xl:text-2xl font-medium leading-relaxed text-foreground break-words hyphens-auto">
+                    {flashcard?.back}
+                  </h2>
+                </div>
+              </div>
+
+              {/* Footer - Fixed at bottom */}
+              <div className="flex-shrink-0 text-center pt-3 sm:pt-4">
                 <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-6 py-2 sm:py-3 bg-green-100 backdrop-blur-sm rounded-full text-xs sm:text-sm font-medium text-green-700 border border-green-200">
                   <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse" />
                   <span className="hidden sm:inline">Click to see question</span>
@@ -103,8 +125,8 @@ function FlashCardItem({ flashcard, isFlipped, setIsFlipped }: FlashCardItemProp
             </div>
 
             {/* Hover Glow Effect */}
-            <div className="absolute inset-0 bg-green-50/30 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="absolute -inset-1 bg-gradient-to-r from-green-200/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
+            {/* <div className="absolute inset-0 bg-green-50/30 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute -inset-1 bg-gradient-to-r from-green-200/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" /> */}
           </Card>
         </ReactCardFlip>
       </div>
