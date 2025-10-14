@@ -59,6 +59,7 @@ export const GenerateNotes = inngest.createFunction(
 
     const notesResult = await step.run("Generate Chapter Notes", async () => {
       const chapters = course?.courseLayout?.chapters;
+      console.log("coursesss",course)
       let index = 0;
       for (const chapter of chapters) {
         const prompt =
@@ -70,10 +71,9 @@ Requirements:
 1. Format as clean semantic HTML (NO <html>, <head>, <body>, or <title> tags)
 2. Start with <h1> containing "Chapter [number]: [title] [emoji]" format (e.g., "Chapter 1: Introduction to React ⚛️")
 3. Use proper HTML structure: <div class='chapter'>, <h2>, <h3>, <p>, <ul>, <li>, <code>, <pre>, <details>, <summary>
-4. Include comprehensive explanations for each topic listed in the chapter
+4. Include explanations for each topic listed in the chapter according to the diffculty choosed.
 5. Add practical examples and code snippets where relevant
 6. Use emojis that are contextually relevant to the chapter content
-7. Make content detailed and educational for exam/study preparation
 8. Structure content with clear headings and subheadings
 
 Generate detailed, educational content that helps students master the concepts for their studies.`;
