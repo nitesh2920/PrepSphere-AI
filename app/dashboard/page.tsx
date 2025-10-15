@@ -2,6 +2,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import React from "react";
 import Banner from "./_components/Banner";
 import CourseList from "./_components/CourseList";
+import PaymentSuccessHandler from "@/app/_components/PaymentSuccessHandler";
 
 
 async function Dashboard() {
@@ -12,6 +13,7 @@ async function Dashboard() {
 
   return (
     <>
+      <PaymentSuccessHandler />
       <Banner isNewUser={isNewUser} />
       <CourseList/>
     </>
