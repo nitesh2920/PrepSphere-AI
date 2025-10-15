@@ -795,6 +795,7 @@ ated Scrollbar Styles for Better Visibility */
   border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
+
 .scrollbar-thumb-green-500\/70:hover::-webkit-scrollbar-thumb {
   background-color: rgba(34, 197, 95, 0.8);
 }
