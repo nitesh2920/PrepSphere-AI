@@ -57,39 +57,51 @@ export const GenerateNotes = inngest.createFunction(
     const { course } = event.data;
     console.log("courser all data",course);
 
-    const notesResult = await step.run("Generate Chapter Notes", async () => {
-      const chapters = course?.courseLayout?.chapters;
-      console.log("coursesss",course)
-      let index = 0;
-      for (const chapter of chapters) {
-        const prompt =
-          `Generate comprehensive study notes for the following chapter. Create detailed, well-structured content that covers all topics thoroughly.
+ const notesResult = await step.run("Generate Chapter Notes", async () => {
+  const chapters = course?.courseLayout?.chapters;
+  const exam = course?.courseType;  // e.g., "midterm", "final", etc.
+  const difficultyLevel = course?.difficultyLevel;  // e.g., "beginner", "intermediate", "advanced"
+  
+  console.log("coursesss", course);
+  
+  let index = 0;
+  for (const chapter of chapters) {
+    // Constructing the prompt based on the `exam` and `difficultyLevel`
+    const prompt = `
+    Generate detailed study notes for the following chapter. Make sure to include all topic points listed in the chapter. Format the content as clean semantic HTML (without <html>, <head>, <body>, or <title> tags).
 
-Chapter Information: ${JSON.stringify(chapter)}
+    Chapter Information: ${JSON.stringify(chapter)}
 
-Requirements:
-1. Format as clean semantic HTML (NO <html>, <head>, <body>, or <title> tags)
-2. Start with <h1> containing "Chapter [number]: [title] [emoji]" format (e.g., "Chapter 1: Introduction to React ⚛️")
-3. Use proper HTML structure: <div class='chapter'>, <h2>, <h3>, <p>, <ul>, <li>, <code>, <pre>, <details>, <summary>
-4. Include explanations for each topic listed in the chapter according to the diffculty choosed.
-5. Add practical examples and code snippets where relevant
-6. Use emojis that are contextually relevant to the chapter content
-8. Structure content with clear headings and subheadings
+    Requirements:
+    1. Format as clean semantic HTML (NO <html>, <head>, <body>, or <title> tags).
+    2. Start with <h1> containing "Chapter [number]: [title] [emoji]" format (e.g., "Chapter 1: Introduction to React ⚛️").
+    3. Use proper HTML structure: <div class='chapter'>, <h2>, <h3>, <p>, <ul>, <li>, <code>, <pre>, <details>, <summary>.
+    4. Include explanations for each topic listed in the chapter based on the selected difficulty level of the course (i.e., ${difficultyLevel}).
+    5. Add practical examples and code snippets where relevant.
+    6. use bakctick only for keywords or main point don't use it on heading or subheadings.
+    6. Use emojis that are contextually relevant to the chapter content and match the topic.
+    7. For ${exam}, make sure to focus on key concepts that are likely to be tested, especially on the difficulty level of ${difficultyLevel}.
+    8. Structure content with clear headings and subheadings to make the content easy to follow and understand.
 
-Generate detailed, educational content that helps students master the concepts for their studies.`;
-        const result = await generateNotesAIModel(prompt);
-        const aiResp = result;
-        // console.log("AI Response:", aiResp);
-        await db.insert(CHAPTER_NOTES_TABLE).values({
-          courseId: course?.courseId,
-          chapterId: index,
-          notes: aiResp
-        });
-        index++;
-      }
+    Ensure the study notes are comprehensive and relevant to the chapter topics. The material should be useful for mastering the concepts for exams and interviews.
+    `;
+    
+    // Call the AI model with the generated prompt to get the study notes for the chapter
+    const result = await generateNotesAIModel(prompt);
+    const aiResp = result;
 
-      return "Completed";
+    // Insert the generated study notes into the database
+    await db.insert(CHAPTER_NOTES_TABLE).values({
+      courseId: course?.courseId,
+      chapterId: index,
+      notes: aiResp
     });
+
+    index++;
+  }
+
+  return "Completed";
+});
 
     const updateCourseStatus = await step.run(
       "Update Course Status",
