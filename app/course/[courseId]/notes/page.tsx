@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, CheckCircle } from 'lucide-react'
 import { useUser } from '@clerk/nextjs'
 import { useProgress } from '@/app/_context/ProgressContext'
+import KeyboardShortcuts from '@/app/_components/KeyboardShortcuts'
 import {
     Pagination,
     PaginationContent,
@@ -58,6 +59,50 @@ function ViewNotes() {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [stepCount]);
+
+    // Keyboard navigation - only on desktop
+    useEffect(() => {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile || !notes || notes.length === 0) return;
+
+        const handleKeyPress = (event: KeyboardEvent) => {
+            // Prevent keyboard navigation when user is typing in input fields
+            if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+                return;
+            }
+
+            switch (event.key) {
+                case 'ArrowLeft':
+                case 'a':
+                case 'A':
+                    event.preventDefault();
+                    if (stepCount > 0) {
+                        setStepCount(prev => prev - 1);
+                    }
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                case 'D':
+                    event.preventDefault();
+                    if (stepCount < notes.length - 1) {
+                        const nextStep = stepCount + 1;
+                        setStepCount(nextStep);
+                        // Mark current chapter as completed when moving to next
+                        markChapterComplete(stepCount);
+                    }
+                    break;
+                case ' ':
+                    event.preventDefault();
+                    if (!completedChapters.has(stepCount)) {
+                        markChapterComplete(stepCount);
+                    }
+                    break;
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, [notes, stepCount, completedChapters]);
 
     // Mark chapter as completed when user finishes reading
     const markChapterComplete = async (chapterIndex: number) => {
@@ -245,6 +290,9 @@ function ViewNotes() {
                 </Pagination>
             </div>
             }
+
+            {/* Keyboard Shortcuts */}
+            <KeyboardShortcuts type="notes" />
         </div>
     )
 }

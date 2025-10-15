@@ -52,7 +52,6 @@ export async function POST(req: NextRequest) {
 
         switch (eventType) {
             case 'checkout.session.completed':
-                // User successfully subscribed - give them Pro membership and 50 credits
                 const session = data.object;
                 const customerEmail = session.customer_details?.email || session.metadata?.userEmail;
                 const customerId = session.customer;
@@ -63,7 +62,7 @@ export async function POST(req: NextRequest) {
                         credits: 50, // Pro users get 50 credits
                         customerId: customerId // Store Stripe customer ID
                     }).where(eq(USER_TABLE.email, customerEmail));
-                    
+
                     console.log(`✅ User ${customerEmail} upgraded to Pro with customer ID: ${customerId}`);
                 }
                 break;
@@ -72,7 +71,7 @@ export async function POST(req: NextRequest) {
                 // Recurring payment successful - refresh credits for Pro users
                 const invoice = data.object;
                 const invoiceCustomerId = invoice.customer;
-                
+
                 // Find user by customer ID first, then by email as fallback
                 if (invoiceCustomerId) {
                     await db.update(USER_TABLE).set({
@@ -91,7 +90,7 @@ export async function POST(req: NextRequest) {
                 // Payment failed - downgrade to basic plan with 5 credits
                 const failedInvoice = data.object;
                 const failedCustomerId = failedInvoice.customer;
-                
+
                 if (failedCustomerId) {
                     await db.update(USER_TABLE).set({
                         isMember: false,
@@ -109,13 +108,13 @@ export async function POST(req: NextRequest) {
                 // Subscription cancelled - downgrade to basic plan
                 const subscription = data.object;
                 const subCustomerId = subscription.customer;
-                
+
                 if (subCustomerId) {
                     await db.update(USER_TABLE).set({
                         isMember: false,
                         credits: 5
                     }).where(eq(USER_TABLE.customerId, subCustomerId));
-                    
+
                     console.log(`❌ Subscription cancelled for customer: ${subCustomerId}`);
                 }
                 break;
