@@ -362,7 +362,7 @@ function CourseList() {
                 }}
                 className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
-                 <option value={3}>3</option>
+                <option value={3}>3</option>
                 <option value={6}>6</option>
                 <option value={12}>12</option>
                 <option value={24}>24</option>
