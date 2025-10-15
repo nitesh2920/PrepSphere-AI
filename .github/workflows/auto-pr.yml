@@ -1,0 +1,26 @@
+name: Create automatically PR on push to dev
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v5
+
+      - name: Create pull request
+        run: |
+          gh pr create \
+            --base main \
+            --head dev \
+            --title "Auto PR: changes from dev" \
+            --body "This pull request was created automatically after a push to dev."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
