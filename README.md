@@ -184,9 +184,7 @@ We welcome contributions! Here's how you can help:
 
 - [ ] **Advanced AI Models**: GPT-4 and Claude integration
 - [ ] **Collaboration**: Share courses with classmates
-- [ ] **Mobile App**: React Native companion app 
 - [ ] **Analytics**: Detailed study analytics and insights
-- [ ] **Study Groups**: Collaborative study sessions
 ---
 
 
