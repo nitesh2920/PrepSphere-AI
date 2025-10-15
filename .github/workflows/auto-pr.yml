@@ -1,4 +1,4 @@
-name: Create automatically PR on push to dev
+name: Create PR on push to dev
 on:
   push:
     branches:
@@ -21,6 +21,6 @@ jobs:
             --base main \
             --head dev \
             --title "${{ github.event.head_commit.message }}" \
-            --body "This pull request was created automatically after a push to dev."
+            --body " "
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
