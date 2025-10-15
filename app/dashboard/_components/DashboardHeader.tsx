@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
-import { UserButton } from '@clerk/nextjs'
 import { Menu, BookOpen, FileText, Brain, Zap, LayoutDashboard } from 'lucide-react'
 import { motion } from 'framer-motion'
+import CustomUserButton from '@/app/_components/CustomUserButton'
 
 interface DashboardHeaderProps {
   onMenuClick?: () => void;
@@ -167,7 +167,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             transition={{ delay: 0.3, duration: 0.3 }}
             className="flex items-center"
           >
-            <UserButton />
+            <CustomUserButton />
           </motion.div>
         </div>
       </div>
