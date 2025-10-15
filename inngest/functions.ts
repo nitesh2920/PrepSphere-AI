@@ -59,8 +59,8 @@ export const GenerateNotes = inngest.createFunction(
 
  const notesResult = await step.run("Generate Chapter Notes", async () => {
   const chapters = course?.courseLayout?.chapters;
-  const exam = course?.courseType;  // e.g., "midterm", "final", etc.
-  const difficultyLevel = course?.difficultyLevel;  // e.g., "beginner", "intermediate", "advanced"
+  const exam = course?.courseType;  
+  const difficultyLevel = course?.difficultyLevel;  
   
   console.log("coursesss", course);
   
@@ -68,7 +68,7 @@ export const GenerateNotes = inngest.createFunction(
   for (const chapter of chapters) {
     // Constructing the prompt based on the `exam` and `difficultyLevel`
     const prompt = `
-    Generate detailed study notes for the following chapter. Make sure to include all topic points listed in the chapter. Format the content as clean semantic HTML (without <html>, <head>, <body>, or <title> tags).
+    Generate study notes accoring to the diffcultyLevel ${difficultyLevel} for the following chapter. Make sure to include all topic points listed in the chapter. Format the content as clean semantic HTML (without <html>, <head>, <body>, or <title> tags).
 
     Chapter Information: ${JSON.stringify(chapter)}
 
@@ -79,9 +79,9 @@ export const GenerateNotes = inngest.createFunction(
     4. Include explanations for each topic listed in the chapter based on the selected difficulty level of the course (i.e., ${difficultyLevel}).
     5. Add practical examples and code snippets where relevant.
     6. use bakctick only for keywords or main point don't use it on heading or subheadings.
-    6. Use emojis that are contextually relevant to the chapter content and match the topic.
-    7. For ${exam}, make sure to focus on key concepts that are likely to be tested, especially on the difficulty level of ${difficultyLevel}.
-    8. Structure content with clear headings and subheadings to make the content easy to follow and understand.
+    7. Use emojis that are contextually relevant to the chapter content and match the topic.
+    8. For ${exam}, make sure to focus on key concepts that are likely to be tested, especially on the difficulty level of ${difficultyLevel}.
+    9. Structure content with clear headings and subheadings to make the content easy to follow and understand.
 
     Ensure the study notes are comprehensive and relevant to the chapter topics. The material should be useful for mastering the concepts for exams and interviews.
     `;

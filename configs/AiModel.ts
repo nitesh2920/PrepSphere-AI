@@ -62,18 +62,18 @@ export async function getCourseOutline(prompt: string): Promise<string> {
 
 export async function generateNotesAIModel(prompt: string): Promise<string> {
   
-  const tools = [
-    {
-      googleSearch: {},
-    },
-  ];
+  // const tools = [
+  //   {
+  //     googleSearch: {},
+  //   },
+  // ];
 
   const config = {
     responseMimeType:'text/plain',
     thinkingConfig: {
       thinkingBudget: -1,
     },
-    tools,
+    // tools,
   };
 
   const contents = [
@@ -90,6 +90,8 @@ export async function generateNotesAIModel(prompt: string): Promise<string> {
   });
 
     const result = response.text ?? '';
+
+    console.log("notessss ka resutl ", result)
 
   return result;
 
