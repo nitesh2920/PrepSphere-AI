@@ -1,4 +1,4 @@
-name: Create automatically PR on push to dev
+name: Create PR on push to dev
 on:
   push:
     branches:
