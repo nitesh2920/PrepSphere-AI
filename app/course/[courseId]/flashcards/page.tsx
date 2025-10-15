@@ -10,7 +10,7 @@ import ProgressNavigation from './_components/ProgressNavigation';
 import NavigationControls from './_components/NavigationControls';
 import LoadingState from './_components/LoadingState';
 import EmptyState from './_components/EmptyState';
-import { RefreshCw } from 'lucide-react';
+import KeyboardShortcuts from '@/app/_components/KeyboardShortcuts';
 
 interface FlashcardData {
     front: string;
@@ -30,7 +30,7 @@ function Flashcards() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [loading, setLoading] = useState(true);
     const [isPolling, setIsPolling] = useState(false);
-    const [completedCards, setCompletedCards] = useState<Set<number>>(new Set());
+
 
     useEffect(() => {
         GetFlashCards()
@@ -59,6 +59,50 @@ function Flashcards() {
             setIsPolling(false);
         }
     }, [loading, flashCards?.content?.length])
+
+    // Keyboard navigation - only on desktop
+    useEffect(() => {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile || !flashCards?.content?.length) return;
+
+        const handleKeyPress = (event: KeyboardEvent) => {
+            // Prevent keyboard navigation when user is typing in input fields
+            if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+                return;
+            }
+
+            switch (event.key) {
+                case 'ArrowLeft':
+                case 'a':
+                case 'A':
+                    event.preventDefault();
+                    handlePrevious();
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                case 'D':
+                    event.preventDefault();
+                    handleNext();
+                    break;
+                case ' ':
+                case 'ArrowUp':
+                case 'ArrowDown':
+                case 'f':
+                case 'F':
+                    event.preventDefault();
+                    setIsFlipped(prev => !prev);
+                    break;
+                case 'r':
+                case 'R':
+                    event.preventDefault();
+                    handleReset();
+                    break;
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, [flashCards?.content?.length, currentIndex, isFlipped])
 
     const GetFlashCards = async () => {
         if (!courseId || !user?.primaryEmailAddress?.emailAddress) return;
@@ -120,7 +164,7 @@ function Flashcards() {
                         itemId: cardIndex.toString()
                     })
                 });
-                setCompletedCards(prev => new Set([...prev, cardIndex]));
+
                 triggerProgressRefresh(); // Trigger progress refresh when card is completed
             } catch (error) {
                 // Silently handle error
@@ -207,6 +251,9 @@ function Flashcards() {
                     </div>
                 </div>
             </div>
+
+            {/* Keyboard Shortcuts */}
+            <KeyboardShortcuts type="flashcards" />
         </div>
     )
 }

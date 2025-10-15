@@ -9,6 +9,7 @@ import QuizProgress from './_components/QuizProgress';
 import QuizQuestion from './_components/QuizQuestion';
 import QuizNavigation from './_components/QuizNavigation';
 import QuizResults from './_components/QuizResults';
+import KeyboardShortcuts from '@/app/_components/KeyboardShortcuts';
 import { Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 
 interface QuizData {
@@ -65,6 +66,58 @@ export default function QuizPage() {
       setIsPolling(false);
     }
   }, [loading, error, quizData?.content?.length]);
+
+
+
+  // Keyboard navigation - only on desktop
+  useEffect(() => {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile || !quizData?.content?.length || showResults) return;
+
+    const handleKeyPress = (event: KeyboardEvent) => {
+      // Prevent keyboard navigation when user is typing in input fields
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      // Get current question data inside the handler
+      const currentQuestionData = quizData.content[currentQuestion - 1];
+
+      switch (event.key) {
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+          event.preventDefault();
+          handlePrevious();
+          break;
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+          event.preventDefault();
+          handleNext();
+          break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+          event.preventDefault();
+          const optionIndex = parseInt(event.key) - 1;
+          if (currentQuestionData?.options[optionIndex]) {
+            handleAnswerSelect(currentQuestionData.options[optionIndex]);
+          }
+          break;
+        case 'Enter':
+          event.preventDefault();
+          if (answeredQuestions.every(Boolean)) {
+            handleSubmit();
+          }
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [quizData?.content?.length, currentQuestion, showResults, answeredQuestions]);
 
   useEffect(() => {
     if (quizData && !showResults && startTime) {
@@ -303,6 +356,9 @@ export default function QuizPage() {
           </>
         )}
       </div>
+
+      {/* Keyboard Shortcuts */}
+      {!showResults && <KeyboardShortcuts type="quiz" />}
     </div>
   );
 }
