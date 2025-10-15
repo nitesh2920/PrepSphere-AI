@@ -25,10 +25,12 @@ const UpgradePage = () => {
       });
 
       if (result.data?.session?.url) {
-        window.open(result.data.session.url, '_blank');
+        // Redirect in the same tab for better UX
+        window.location.href = result.data.session.url;
       }
     } catch (error) {
       console.error('Checkout error:', error);
+      toast.error('Failed to start checkout. Please try again.');
     } finally {
       setLoading(false);
     }

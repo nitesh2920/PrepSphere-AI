@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from 'stripe'
+import { currentUser } from '@clerk/nextjs/server';
 
 export async function POST(req: NextRequest) {
     const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -11,6 +12,14 @@ export async function POST(req: NextRequest) {
     }
 
     const stripe = new Stripe(stripeSecretKey)
+    const user = await currentUser();
+
+    if (!user?.primaryEmailAddress?.emailAddress) {
+        return NextResponse.json(
+            { error: 'User email is required' },
+            { status: 400 }
+        );
+    }
 
     const { priceId } = await req.json();
 
@@ -23,19 +32,21 @@ export async function POST(req: NextRequest) {
 
     const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
+        customer_email: user.primaryEmailAddress.emailAddress,
         line_items: [
             {
                 price: priceId,
                 quantity: 1,
             },
         ],
-        // {CHECKOUT_SESSION_ID} is a string literal; do not change it!
-        // the actual Session ID is returned in the query parameter when your customer
-        // is redirected to the success page.
-        success_url: `${process.env.HOST_URL}payment-success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: process.env.HOST_URL,
+        metadata: {
+            userEmail: user.primaryEmailAddress.emailAddress,
+            userId: user.id,
+        },
+        // Redirect to dashboard after successful payment
+        success_url: `${process.env.HOST_URL}dashboard?payment=success`,
+        cancel_url: `${process.env.HOST_URL}dashboard/upgrade?payment=cancelled`,
     });
-
 
     return NextResponse.json({ session })
 }

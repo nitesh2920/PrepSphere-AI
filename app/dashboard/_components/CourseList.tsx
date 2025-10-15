@@ -40,7 +40,7 @@ function CourseList() {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(12)
+  const [itemsPerPage, setItemsPerPage] = useState(6)
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage)
@@ -347,7 +347,7 @@ function CourseList() {
 
         <div className="flex items-center gap-3 flex-wrap">
           {/* Items per page dropdown */}
-          {filteredCourses.length > 6 && (
+          {filteredCourses.length > 3 && (
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -362,6 +362,7 @@ function CourseList() {
                 }}
                 className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
+                 <option value={3}>3</option>
                 <option value={6}>6</option>
                 <option value={12}>12</option>
                 <option value={24}>24</option>
