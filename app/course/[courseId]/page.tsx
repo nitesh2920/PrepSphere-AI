@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import LenisProvider from '@/app/_components/providers/LenisProvider'
 
 export default function Course() {
     const [course, setCourse] = useState(null)
@@ -146,6 +147,7 @@ export default function Course() {
     }
 
     return (
+        <LenisProvider>
         <AnimatePresence mode="wait">
             <motion.div
                 className="min-h-screen bg-background"
@@ -210,5 +212,6 @@ export default function Course() {
                 </div>
             </motion.div>
         </AnimatePresence>
+        </LenisProvider>
     )
 }
