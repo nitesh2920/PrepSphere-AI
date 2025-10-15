@@ -178,26 +178,26 @@ body {
 /* List markers - Light Mode */
 .prose ul>li::marker {
   color: #ea580c;
-  /* orange-600 */
+
   font-weight: 500;
 }
 
 .prose ol>li::marker {
   color: #ea580c;
-  /* orange-600 */
+
   font-weight: 600;
 }
 
 /* List markers - Dark Mode */
 .dark .prose ul>li::marker {
   color: #f59e0b;
-  /* amber-500 */
+
   font-weight: 500;
 }
 
 .dark .prose ol>li::marker {
   color: #f59e0b;
-  /* amber-500 */
+
   font-weight: 600;
 }
 
@@ -349,11 +349,8 @@ body {
 /* Highlight inline code (backticks) - Dark Mode */
 .dark .prose code {
   background-color: #1f2937;
-  /* gray-800 */
   color: #fbbf24;
-  /* amber-400 */
   border: 1px solid #374151;
-  /* gray-700 */
 }
 
 
@@ -447,7 +444,7 @@ body {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
-/* Light mode language labels and enhanced features */
+
 .prose pre[data-language]::before {
   content: attr(data-language);
   position: absolute;
