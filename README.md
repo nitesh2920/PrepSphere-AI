@@ -34,7 +34,6 @@ PrepSphere AI is a  study companion that transforms the way students, profession
 
 🎨 **Beautiful User Experience**
 - Modern, responsive design with dark/light mode
-- Orange-themed UI with smooth animations
 - Mobile-first approach with PWA support
 - Intuitive navigation and user-friendly interface
 
