@@ -27,7 +27,7 @@ const nextConfig: NextConfig = {
   // Experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', '@clerk/nextjs'],
-    optimizeCss: true,
+    // optimizeCss requires 'critters' package - removed to fix build error
   },
   
   // Webpack optimizations
