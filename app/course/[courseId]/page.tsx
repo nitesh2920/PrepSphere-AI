@@ -148,70 +148,70 @@ export default function Course() {
 
     return (
         <LenisProvider>
-        <AnimatePresence mode="wait">
-            <motion.div
-                className="min-h-screen bg-background"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-            >
+            <AnimatePresence mode="wait">
+                <motion.div
+                    className="min-h-screen bg-background"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                >
 
 
-                <div className="container mx-auto px-4 py-6 max-w-6xl">
-                    <motion.div
-                        className="space-y-8"
-                        initial={{ y: 20 }}
-                        animate={{ y: 0 }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                    >
-                        {/* Back to Dashboard Button */}
+                    <div className="container mx-auto px-4 py-6 max-w-6xl">
                         <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.1, duration: 0.4 }}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                            className="space-y-8"
+                            initial={{ y: 20 }}
+                            animate={{ y: 0 }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
                         >
-                            <Button
-                                variant="outline"
-                                onClick={() => router.push('/dashboard')}
-                                className="flex items-center space-x-2 transition-all duration-200 hover:shadow-md"
+                            {/* Back to Dashboard Button */}
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.1, duration: 0.4 }}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
                             >
-                                <ArrowLeft className="h-4 w-4" />
-                                <span>Back to Dashboard</span>
-                            </Button>
-                        </motion.div>
+                                <Button
+                                    variant="outline"
+                                    onClick={() => router.push('/dashboard')}
+                                    className="flex items-center space-x-2 transition-all duration-200 hover:shadow-md"
+                                >
+                                    <ArrowLeft className="h-4 w-4" />
+                                    <span>Back to Dashboard</span>
+                                </Button>
+                            </motion.div>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-                        >
-                            <CourseIntroCard course={course} />
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-                        >
-                            <StudyMaterialSection courseId={courseId as string} course={course} />
-                        </motion.div>
-
-                        {course && (
                             <motion.div
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+                                transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
                             >
-                                <ChapterList course={course} />
+                                <CourseIntroCard course={course} />
                             </motion.div>
-                        )}
-                    </motion.div>
-                </div>
-            </motion.div>
-        </AnimatePresence>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+                            >
+                                <StudyMaterialSection courseId={courseId as string} course={course} />
+                            </motion.div>
+
+                            {course && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+                                >
+                                    <ChapterList course={course} />
+                                </motion.div>
+                            )}
+                        </motion.div>
+                    </div>
+                </motion.div>
+            </AnimatePresence>
         </LenisProvider>
     )
 }

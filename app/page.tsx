@@ -7,6 +7,10 @@ import FAQSection from './_components/landing/FAQSection'
 import Footer from './_components/landing/Footer'
 import LenisProvider from './_components/providers/LenisProvider'
 
+// Force static generation for faster initial load
+export const dynamic = 'force-static'
+export const revalidate = 3600 // Revalidate every hour
+
 export default function Home() {
   return (
     <LenisProvider>

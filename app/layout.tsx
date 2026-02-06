@@ -67,7 +67,12 @@ export const metadata: Metadata = {
 };
 
 const outfit = Outfit({
-  subsets: ['latin']
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial'],
+  adjustFontFallback: true,
+  variable: '--font-outfit'
 })
 export default function RootLayout({
   children,
@@ -78,6 +83,16 @@ export default function RootLayout({
     <ClerkProvider>
 
       <html lang="en">
+        <head>
+          {/* Critical resource hints */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+          
+          {/* Preload critical assets */}
+          <link rel="preload" as="image" href="/logo.svg" />
+          <link rel="preload" as="image" href="/logo-dark.svg" />
+        </head>
         <body
           className={outfit.className}
           suppressHydrationWarning
