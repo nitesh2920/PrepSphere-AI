@@ -16,11 +16,12 @@ export default function SignUpPage() {
     setMounted(true)
   }, [])
 
-  if (!mounted) return null
+  // Don't return null - render with opacity to prevent CLS
+  const visibility = mounted ? 'opacity-100' : 'opacity-0'
 
   return (
     <LenisProvider>
-    <div className="min-h-screen relative overflow-hidden">
+    <div className={`min-h-screen relative overflow-hidden transition-opacity duration-300 ${visibility}`}>
       {/* Blurred Background */}
       <div className="absolute inset-0 z-0">
         {/* Background gradient matching the landing page */}
@@ -34,15 +35,16 @@ export default function SignUpPage() {
         <div className="absolute inset-0 backdrop-blur-sm bg-white/30 dark:bg-black/30" />
       </div>
 
-      <div className="absolute  top-16 hidden md:block sm:top-20 md:top-6 left-3 sm:left-4 md:left-6 z-20">
+      <div className="absolute top-16 hidden md:block sm:top-20 md:top-6 left-3 sm:left-4 md:left-6 z-20">
         <Link href="/">
           <motion.button
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0.01, x: 0 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center cursor-pointer  gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-lg text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors font-outfit text-sm sm:text-base"
+            className="flex items-center cursor-pointer gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-lg text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors font-outfit text-sm sm:text-base"
+            style={{ willChange: 'auto' }}
           >
             <ArrowLeft size={14} className="sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Back to Home</span>
@@ -54,23 +56,29 @@ export default function SignUpPage() {
       {/* Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
         <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          initial={{ opacity: 0.01, y: 0, scale: 1 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           className="w-full max-w-md"
+          style={{ willChange: 'auto' }}
         >
 
           <div className="text-center mb-6">
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0.01, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.4 }}
               className="flex items-center justify-center gap-3 mb-4"
+              style={{ willChange: 'auto' }}
             >
               <img
-                src={theme === 'dark' ? '/logo-dark.svg' : '/logo-dark.svg'}
+                src="/logo-dark.svg"
                 alt="PrepSphere AI"
                 className="w-10 h-10"
+                width="40"
+                height="40"
+                loading="eager"
+                decoding="sync"
               />
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white font-outfit">
                 PrepSphere AI
@@ -81,10 +89,11 @@ export default function SignUpPage() {
             </p>
           </div>
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0.01, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.4 }}
             className="mb-6 flex justify-center"
+            style={{ willChange: 'auto' }}
           >
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30 text-orange-700 dark:text-orange-400 px-4 py-2 rounded-full text-sm font-medium border border-orange-200 dark:border-orange-800 backdrop-blur-sm">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -94,12 +103,18 @@ export default function SignUpPage() {
             </div>
           </motion.div>
 
-          {/* Clerk SignUp Component */}
+          {/* Clerk SignUp Component - Reserved space to prevent CLS */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0.01, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.4 }}
             className="flex justify-center"
+            style={{ 
+              minHeight: '600px',
+              willChange: 'auto',
+              contentVisibility: 'auto',
+              containIntrinsicSize: '0 600px'
+            }}
           >
             <SignUp
               appearance={{
