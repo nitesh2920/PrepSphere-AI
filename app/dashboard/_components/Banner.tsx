@@ -8,7 +8,7 @@ interface BannerProps {
 }
 
 const Banner = ({ isNewUser }: BannerProps) => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
 
   const motivationalSlogans = [
     "Believe you can and you're halfway there.",
@@ -26,8 +26,22 @@ const Banner = ({ isNewUser }: BannerProps) => {
 
   const slogan = motivationalSlogans[Math.floor(Math.random() * motivationalSlogans.length)];
 
+  // Reserve space to prevent layout shift
+  if (!isLoaded || !user) {
+    return (
+      <div className='p-4 md:p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 mb-4 md:mb-6 min-h-[120px] md:min-h-[140px]'>
+        <div className='flex items-center'>
+          <div className='space-y-3 w-full'>
+            <div className='h-8 md:h-9 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse w-3/4'></div>
+            <div className='h-5 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-1/2'></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className='p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700'>
+    <div className='p-4 md:p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 mb-4 md:mb-6 min-h-[120px] md:min-h-[140px]'>
       <div className='flex items-center'>
         {isNewUser ? (
           <div>
