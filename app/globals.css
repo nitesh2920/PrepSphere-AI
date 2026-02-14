@@ -35,11 +35,22 @@ img {
   will-change: auto !important;
 }
 
-/* CLS Prevention: Clerk component container */
-.cl-rootBox,
-.cl-card {
-  min-height: 550px;
-  contain: layout style paint;
+/* Force Clerk UserButton to be compact */
+.cl-userButtonBox,
+.cl-userButtonTrigger,
+.cl-userButtonAvatarBox {
+  min-height: auto !important;
+  height: auto !important;
+}
+
+.cl-userButtonTrigger {
+  padding: 0 !important;
+}
+
+/* Ensure header stays compact */
+header .cl-userButtonBox {
+  display: flex;
+  align-items: center;
 }
 
 /* Navbar specific fixes */
@@ -254,7 +265,7 @@ body {
 /* Prose strong text - Light Mode */
 .prose strong {
   color: #000000;
-  /* black - strong emphasis for light mode */
+ 
 }
 
 /* Prose links - Light Mode */
@@ -705,8 +716,9 @@ html.lenis {
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
-}/
-* Custom Scrollbar Styles for Flashcards */
+}
+
+/* Custom Scrollbar Styles for Flashcards */
 .scrollbar-thin {
   scrollbar-width: thin;
 }

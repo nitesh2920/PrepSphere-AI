@@ -79,8 +79,8 @@ function DashboardLayout({ children }: ProviderProps) {
                     />
 
                     {/* Page Content */}
-                    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-                        <div className="p-4 md:p-6">
+                    <main className="bg-gray-50 dark:bg-gray-900">
+                        <div className="p-3 md:p-4 lg:p-6">
                             {children}
                         </div>
                     </main>
